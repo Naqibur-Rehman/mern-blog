@@ -50,7 +50,7 @@ const Header = () => {
             <FaMoon />
           </button>
           <Link to="sign-in">
-            <button className="px-4 py-1.5 rounded-lg bg-gradient-to-r from-purple-500 to-blue-500 text-white ">
+            <button className="px-4 py-1.5 rounded-lg outline  bg-gradient-to-r from-purple-500 to-blue-500 text-white ">
               Sign In
             </button>
           </Link>
@@ -74,7 +74,9 @@ const Header = () => {
                 id={path}
                 to={item.link}
                 key={item.id}
-                className={`mx-2 px-4 py-1.5 rounded-xl cursor-pointer hover:bg-indigo-500 hover:text-white ${path === item.link ? "bg-indigo-700 text-white" : ""}`}
+                className={`mx-2 px-4 py-1.5 rounded-xl cursor-pointer hover:bg-indigo-500 hover:text-white ${
+                  path === item.link ? "bg-indigo-700 text-white" : ""
+                }`}
               >
                 {item.text}
               </Link>
@@ -90,7 +92,9 @@ const Header = () => {
             {navItems.map((item) => (
               <div
                 key={item.id}
-                className={`px-4 py-2 rounded-lg cursor-pointer hover:bg-indigo-500 hover:text-white ${path === item.link ? "bg-indigo-700 text-white" : ""}`}
+                className={`px-4 py-2 rounded-lg cursor-pointer hover:bg-indigo-500 hover:text-white ${
+                  path === item.link ? "bg-indigo-700 text-white" : ""
+                }`}
               >
                 <Link to={item.link} key={item.id} className="mx-2 px-4 py-1.5">
                   {item.text}
