@@ -39,7 +39,7 @@ const SignUp = () => {
                 id="email"
                 type="text"
                 placeholder="name@email.com"
-                className="mt-1 p-2 w-full bg-gray-100 outline-none rounded-lg"
+                className="mt-1 p-2 w-full bg-gray-100 outline-teal-400 rounded-lg"
               />
             </div>
             <div>
@@ -50,7 +50,7 @@ const SignUp = () => {
                 id="password"
                 type="text"
                 placeholder="Password"
-                className="p-2 mt-1 w-full bg-gray-100 outline-none rounded-lg"
+                className="p-2 mt-1 w-full bg-gray-100 outline-teal-400 rounded-lg"
               />
             </div>
             <button
@@ -67,7 +67,9 @@ const SignUp = () => {
           </form>
           <div className="flex gap-2 mt-5 text-sm">
             <p>Have an account?</p>
-            <Link to="/sign-in" className="text-blue-500">Sign In</Link>
+            <Link to="/sign-in" className="text-blue-500">
+              Sign In
+            </Link>
           </div>
         </div>
       </div>

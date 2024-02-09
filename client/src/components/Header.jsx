@@ -57,7 +57,7 @@ const Header = () => {
             </Link>
             <button
               onClick={handleToggleNav}
-              className="px-4 py-1.5 rounded-lg border-2  md:hidden"
+              className="px-4 py-1.5 rounded-lg md:hidden"
             >
               {toggleNav ? (
                 <AiOutlineClose size={20} />
