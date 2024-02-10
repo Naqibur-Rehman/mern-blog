@@ -18,8 +18,8 @@ const Header = () => {
   ];
 
   return (
-    <header className="border-b-2">
-      <div className="mx-6 my-4">
+    <header className="px-2 sm:pl-6 md:px-6 py-4 border-b-2">
+      <div className="">
         <div className="flex flex-row justify-between items-center">
           <Link
             to="/"
@@ -32,7 +32,7 @@ const Header = () => {
           </Link>
 
           <form>
-            <div className=" items-center px-2 py-2 border rounded-lg bg-slate-100 hidden lg:inline-flex">
+            <div className="items-center px-2 py-2 border rounded-lg bg-slate-100 hidden lg:inline-flex">
               <input
                 className="bg-slate-100 outline-none"
                 type="text"
@@ -42,23 +42,25 @@ const Header = () => {
             </div>
           </form>
 
-          <button className="px-4 py-3 ml-auto rounded-lg text-gray-700 bg-gray-100 lg:hidden">
+          <button className="px-4 py-3 mx-auto rounded-lg text-gray-700 bg-gray-100 lg:hidden">
             <AiOutlineSearch />
           </button>
 
-          <div className="flex gap-2 ml-auto items-center md:order-2">
+          <div className="flex gap-2 items-center md:order-2">
             <button className="px-4 py-3 rounded-lg text-gray-700 bg-gray-100 hidden sm:inline-flex">
               <FaMoon />
             </button>
             <Link to="sign-in">
-              <button className="px-4 py-1.5 text-nowrap text-sm sm:text-xl rounded-lg outline  bg-gradient-to-r from-purple-500 to-blue-500 text-white ">
+              <div className="p-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg">
+                <button className="h-5/6 px-4 py-1 w-full bg-white text-nowrap text-sm sm:text-xl  rounded-md hover:bg-gradient-to-r from-purple-600 to-pink-600 hover:text-white">
+                  Sign In
+                </button>
+              </div>
+              {/* <button className="px-4 py-1.5 outline-none text-nowrap text-sm sm:text-xl rounded-lg  bg-gradient-to-r from-purple-500 to-blue-500 text-white ">
                 Sign In
-              </button>
+              </button> */}
             </Link>
-            <button
-              onClick={handleToggleNav}
-              className="px-4 py-1.5 rounded-lg md:hidden"
-            >
+            <button onClick={handleToggleNav} className="rounded-lg md:hidden">
               {toggleNav ? (
                 <AiOutlineClose size={20} />
               ) : (
