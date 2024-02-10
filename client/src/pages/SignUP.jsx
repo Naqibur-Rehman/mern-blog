@@ -56,7 +56,7 @@ const SignUp = () => {
             Blog
           </Link>
           <p className="mt-5 font-semibold text-sm">
-            Welcome to Naqeeb&apos;s Blog.You can Sign Up with your email or
+            Welcome to Naqeeb&apos;s Blog.You can Sign Up with your email and password or
             google account.
           </p>
         </div>
@@ -130,7 +130,7 @@ const SignUp = () => {
             </button>
             <div className="p-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg">
               <button className="h-5/6 p-1 w-full bg-white  rounded-md hover:bg-gradient-to-r from-purple-600 to-pink-600 hover:text-white">
-                Google Sign In
+                Continue with Google
               </button>
             </div>
           </form>
