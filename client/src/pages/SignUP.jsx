@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
@@ -22,8 +23,8 @@ const SignUp = () => {
     }
 
     try {
-      setLoading(true)
-      setErrorMessage(null)
+      setLoading(true);
+      setErrorMessage(null);
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -34,9 +35,9 @@ const SignUp = () => {
         setLoading(false);
         return setErrorMessage(data.message);
       }
-      setLoading(false)
+      setLoading(false);
       if (res.ok) {
-        navigate("/sign-in")
+        navigate("/sign-in");
       }
     } catch (error) {
       console.log(error);
@@ -56,8 +57,8 @@ const SignUp = () => {
             Blog
           </Link>
           <p className="mt-5 font-semibold text-sm">
-            Welcome to Naqeeb&apos;s Blog.You can Sign Up with your email and password or
-            google account.
+            Welcome to Naqeeb&apos;s Blog.You can Sign Up with your email and
+            password or google account.
           </p>
         </div>
         {/* right side */}
@@ -101,7 +102,7 @@ const SignUp = () => {
             </div>
             <button
               type="submit"
-              className="p-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:bg-gradient-to-l text-white"
+              className="p-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:bg-gradient-to-l text-white"
               disabled={loading}
             >
               {loading ? (
@@ -128,11 +129,7 @@ const SignUp = () => {
                 "Sign Up"
               )}
             </button>
-            <div className="p-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg">
-              <button className="h-5/6 p-1 w-full bg-white  rounded-md hover:bg-gradient-to-r from-purple-600 to-pink-600 hover:text-white">
-                Continue with Google
-              </button>
-            </div>
+            <OAuth />
           </form>
           <div className="flex gap-2 mt-5 text-sm">
             <p>Have an account?</p>

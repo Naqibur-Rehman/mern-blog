@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice";
+import OAuth from "../components/OAuth";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
@@ -21,6 +22,8 @@ const SignIn = () => {
 
     if (!formData.email || !formData.password) {
       return dispatch(signInFailure("All the fields are required!"));
+    } else {
+      dispatch(signInFailure(null))
     }
 
     try {
@@ -89,7 +92,7 @@ const SignIn = () => {
             </div>
             <button
               type="submit"
-              className="p-1.5 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:bg-gradient-to-l text-white"
+              className="p-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:bg-gradient-to-l text-white"
               disabled={loading}
             >
               {loading ? (
@@ -116,11 +119,7 @@ const SignIn = () => {
                 "Sign In"
               )}
             </button>
-            <div className="p-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg">
-              <button className="h-5/6 p-1 w-full bg-white  rounded-md hover:bg-gradient-to-r from-purple-600 to-pink-600 hover:text-white">
-                Continue with Google
-              </button>
-            </div>
+            <OAuth />
           </form>
           <div className="flex gap-2 mt-5 text-sm">
             <p>Don&apos;t Have an account?</p>
