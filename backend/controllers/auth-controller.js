@@ -18,10 +18,13 @@ export const signup = async (req, res, next) => {
     next(errorHandler(400, "All fields are required"));
   }
   try {
-    const existingUser = await User.findOne({username });
+    const existingUser = await User.findOne({ username });
     if (existingUser) {
       return next(
-        errorHandler(422, "User name already taken, please choose a different one.")
+        errorHandler(
+          422,
+          "User name already taken, please choose a different one."
+        )
       );
     }
   } catch (error) {
@@ -35,7 +38,7 @@ export const signup = async (req, res, next) => {
       );
     }
   } catch (error) {
-    return next(errorHandler(500, "Oops! an error occured.")) 
+    return next(errorHandler(500, "Oops! an error occured."));
   }
 
   const hashedPassword = bcrypt.hashSync(password, 10);
@@ -82,15 +85,64 @@ export const signin = async (req, res, next) => {
       { expiresIn: "1h" }
     );
 
-    res
-      .status(200)
-      .cookie("access_token", token, { httpOnly: true })
-      .json({
-        userId: existingUser._id,
-        email: existingUser.email,
-        token: token,
-      });
+    res.status(200).cookie("access_token", token, { httpOnly: true }).json({
+      userId: existingUser._id,
+      email: existingUser.email,
+      token: token,
+    });
   } catch (error) {
     return next(errorHandler(500, "Login failed."));
+  }
+};
+
+export const google = async (req, res, next) => {
+  const { name, email, googlePhotoUrl } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (user) {
+      const token = jwt.sign(
+        {
+          userId: user._id,
+        },
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: "1h" }
+      );
+      const { password, ...rest } = user._doc;
+      res
+        .status(200)
+        .cookie("access_token", token, { httpOnly: true })
+        .json(rest);
+    } else {
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+      const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
+      // Naqibur Rehman => naqiburrehman4347
+      const newUser = new User({
+        username:
+          name.toLowerCase().split(" ").join("") +
+          Math.random().toString(9).slice(-4),
+        email,
+        password: hashedPassword,
+        profilePicture: googlePhotoUrl,
+      });
+
+      await newUser.save();
+      const token = jwt.sign(
+        {
+          userId: newUser._id,
+        },
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: "1h" }
+      );
+      const { password, ...rest } = newUser._doc;
+      res
+        .status(200)
+        .cookie("accees-token", token, { httpOnly: true })
+        .json(rest);
+    }
+  } catch (error) {
+    return next(errorHandler(501, "Something went wrong! Try again."));
   }
 };
