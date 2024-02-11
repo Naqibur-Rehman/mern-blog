@@ -2,13 +2,20 @@ import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch, AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { FaMoon } from "react-icons/fa";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const path = useLocation().pathname;
+  const { currentUser } = useSelector((state) => state.user);
   const [toggleNav, setToggleNav] = useState(false);
+  const [toggleDropdpown, setToggleDropdpown] = useState(false);
 
   const handleToggleNav = () => {
     setToggleNav(!toggleNav);
+  };
+
+  const handleToggleDropdown = () => {
+    setToggleDropdpown(!toggleDropdpown);
   };
 
   const navItems = [
@@ -50,16 +57,67 @@ const Header = () => {
             <button className="px-4 py-3 rounded-lg text-gray-700 bg-gray-100 hidden sm:inline-flex">
               <FaMoon />
             </button>
-            <Link to="sign-in">
-              <div className="p-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg">
-                <button className="h-5/6 px-4 py-1 w-full bg-white text-nowrap text-sm sm:text-xl  rounded-md hover:bg-gradient-to-r from-purple-600 to-pink-600 hover:text-white">
-                  Sign In
-                </button>
+            {currentUser ? (
+              <div>
+                <div className="flex">
+                  <button
+                    id="dropdownDefaultButton"
+                    onClick={handleToggleDropdown}
+                    className="text-white inline-flex items-center"
+                    type="button"
+                  >
+                    <img
+                      className="rounded-3xl h-10"
+                      src={currentUser.profilePicture}
+                      alt={currentUser.name}
+                    />
+                  </button>
+                </div>
+                {toggleDropdpown && (
+                  <div
+                    id="dropdown"
+                    className="absolute z-10 right-0 py-2 bg-white divide-y divide-gray-100 rounded-lg shadow w-48"
+                  >
+                    <div className="pb-2 px-4">
+                      <p className="text-sm block">@{currentUser.username}</p>
+                      <h1 className="text-sm font-medium truncate">
+                        {currentUser.email}
+                      </h1>
+                    </div>
+                    <ul
+                      className="text-sm divide-y divide-gray-100 text-gray-700 dark:text-gray-20"
+                      aria-labelledby="dropdownDefaultButton"
+                    >
+                      <li>
+                        <Link
+                          to="/dashboard/?tab=profile"
+                          className="block px-4 py-2 hover:bg-gray-100"
+                        >
+                          Profile
+                        </Link>
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          className="block px-4 py-2 hover:bg-gray-100 "
+                        >
+                          Sign out
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </div>
-              {/* <button className="px-4 py-1.5 outline-none text-nowrap text-sm sm:text-xl rounded-lg  bg-gradient-to-r from-purple-500 to-blue-500 text-white ">
-                Sign In
-              </button> */}
-            </Link>
+            ) : (
+              <Link to="sign-in">
+                <div className="p-0.5 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg">
+                  <button className="h-5/6 px-4 py-1 w-full bg-white text-nowrap text-sm sm:text-xl  rounded-md hover:bg-gradient-to-r from-purple-600 to-pink-600 hover:text-white">
+                    Sign In
+                  </button>
+                </div>
+              </Link>
+            )}
+
             <button onClick={handleToggleNav} className="rounded-lg md:hidden">
               {toggleNav ? (
                 <AiOutlineClose size={20} />
