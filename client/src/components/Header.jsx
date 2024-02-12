@@ -28,7 +28,7 @@ const Header = () => {
   ];
 
   return (
-    <header className="px-2 sm:pl-6 md:px-6 py-3 dark:bg-gray-800 border-b-2">
+    <header className="px-2 sm:pl-6 md:px-6 py-3 dark:bg-gray-800 border-b-2 dark:border-gray-700">
       <div className="">
         <div className="flex flex-row justify-between items-center">
           <Link
@@ -61,7 +61,7 @@ const Header = () => {
               onClick={() => dispatch(toggleTheme())}
               className="px-4 py-3 rounded-3xl outline outline-1 hover:bg-gray-100 dark:hover:bg-gray-700 hidden sm:inline-flex"
             >
-              {theme === 'light' ? <FaMoon /> : <FaSun />}
+              {theme === "light" ? <FaMoon /> : <FaSun />}
             </button>
             {currentUser ? (
               <div>
@@ -154,20 +154,16 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         {toggleNav && (
-          <div className="flex flex-col text-center w-full mt-6 md:hidden">
+          <div className="flex flex-col text-sm border-t dark:border-gray-700 text-center w-full mt-6 md:hidden">
             <ul className="">
               {navItems.map((item) => (
                 <div
                   key={item.id}
-                  className={`px-4 py-2 border-b cursor-pointer hover:bg-indigo-500 hover:text-white ${
+                  className={`px-4 py-2 border-b dark:border-gray-600 cursor-pointer hover:bg-indigo-500 hover:text-white ${
                     path === item.link ? "bg-indigo-700 text-white" : ""
                   }`}
                 >
-                  <Link
-                    to={item.link}
-                    key={item.id}
-                    className="block"
-                  >
+                  <Link to={item.link} key={item.id} className="block">
                     {item.text}
                   </Link>
                 </div>
