@@ -9,13 +9,13 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="px-6 bg-gray-300 bottom-0 left-0 z-20 w-full border border-t-8 border-teal-500 rounded-lg">
+    <footer className="px-6 dark:bg-gray-800 bottom-0 left-0 z-20 w-full border border-t-8 border-teal-500 rounded-lg">
       <div className="w-full max-w-7xl mx-auto">
         <div className="grid w-full justify-between md:flex">
           <div className="mt-6">
             <Link
               to="/"
-              className="self-center whitespace-nowrap text-lg font-semibold dark:text-white sm:text-xl"
+              className="self-center whitespace-nowrap text-lg font-semibold sm:text-xl"
             >
               <span className="px-3 py-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white">
                 Naqeebs&apos;s
@@ -25,10 +25,10 @@ const Footer = () => {
           </div>
           <div className="mt-6 grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-6">
             <div>
-              <h2 className="mb-4 text-sm font-semibold text-gray-500 uppercase">
+              <h2 className="mb-4 text-sm font-semibold uppercase">
                 About
               </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+              <ul className="font-medium">
                 <li className="mb-4">
                   <Link to="/about" className="hover:underline">
                     Naqeeb&apos;s Blog
@@ -47,10 +47,10 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-4 text-sm font-semibold text-gray-500 uppercase">
+              <h2 className="mb-4 text-sm font-semibold uppercase">
                 Follow
               </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+              <ul className=" font-medium">
                 <li className="mb-4">
                   <a
                     href="https://github.com/Naqibur-Rehman"
@@ -74,10 +74,10 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-4 text-sm font-semibold text-gray-500 uppercase">
-                Follow
+              <h2 className="mb-4 text-sm font-semibold uppercase">
+                Legal
               </h2>
-              <ul className="text-gray-500 dark:text-gray-400 font-medium">
+              <ul className="font-medium">
                 <li className="mb-4">
                   <a href="#" className="hover:underline">
                     Privacy Policy

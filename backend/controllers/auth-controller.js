@@ -88,6 +88,8 @@ export const signin = async (req, res, next) => {
     res.status(200).cookie("access_token", token, { httpOnly: true }).json({
       userId: existingUser._id,
       email: existingUser.email,
+      username: existingUser.username,
+      profilePicture: existingUser.profilePicture,
       token: token,
     });
   } catch (error) {

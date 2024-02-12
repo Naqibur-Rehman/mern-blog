@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../redux/user/userSlice";
 import OAuth from "../components/OAuth";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
-  
-  const {loading, error: errorMessage} = useSelector(state => state.user)
 
-  const dispatch = useDispatch()
+  const { loading, error: errorMessage } = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -23,11 +27,11 @@ const SignIn = () => {
     if (!formData.email || !formData.password) {
       return dispatch(signInFailure("All the fields are required!"));
     } else {
-      dispatch(signInFailure(null))
+      dispatch(signInFailure(null));
     }
 
     try {
-      dispatch(signInStart())
+      dispatch(signInStart());
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -35,15 +39,15 @@ const SignIn = () => {
       });
       const data = await res.json();
       if (data.success === false) {
-        return dispatch(signInFailure(data.message))
+        return dispatch(signInFailure(data.message));
       }
-      
+
       if (res.ok) {
-        dispatch(signInSuccess(data))
+        dispatch(signInSuccess(data));
         navigate("/");
       }
     } catch (error) {
-      dispatch(signInFailure(error.message))
+      dispatch(signInFailure(error.message));
     }
   };
 
@@ -52,15 +56,15 @@ const SignIn = () => {
       <div className="flex flex-col  p-3 gap-5 max-w-3xl mx-auto md:flex-row md:items-center">
         {/* left side */}
         <div className="flex-1 text-center md:text-left">
-          <Link to="/" className="text-4xl font-bold dark:text-white">
+          <Link to="/" className="text-4xl font-bold">
             <span className="px-3 py-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white">
               Naqeebs&apos;s
             </span>
             Blog
           </Link>
           <p className="mt-5 font-semibold text-sm">
-            Welcome to Naqeeb&apos;s Blog.You can Sign In with your email and password or
-            Google Account.
+            Welcome to Naqeeb&apos;s Blog.You can Sign In with your email and
+            password or Google Account.
           </p>
         </div>
         {/* right side */}
@@ -74,7 +78,7 @@ const SignIn = () => {
                 id="email"
                 type="email"
                 placeholder="name@email.com"
-                className="mt-1 p-2 w-full bg-gray-100 outline-teal-400 rounded-lg"
+                className="mt-1 p-2 w-full bg-gray-100 dark:bg-gray-600 focus:outline-none focus:ring focus:border-teal-400 rounded-lg"
                 onChange={handleChange}
               />
             </div>
@@ -86,7 +90,7 @@ const SignIn = () => {
                 id="password"
                 type="password"
                 placeholder="Password"
-                className="p-2 mt-1 w-full bg-gray-100 outline-teal-400 rounded-lg"
+                className="p-2 mt-1 w-full bg-gray-100 dark:bg-gray-600 focus:outline-none focus:ring focus:border-teal-400 rounded-lg"
                 onChange={handleChange}
               />
             </div>

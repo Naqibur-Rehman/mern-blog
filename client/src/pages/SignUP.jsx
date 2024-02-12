@@ -50,7 +50,7 @@ const SignUp = () => {
       <div className="flex flex-col  p-3 gap-5 max-w-3xl mx-auto md:flex-row md:items-center">
         {/* left side */}
         <div className="flex-1 text-center md:text-left">
-          <Link to="/" className="text-4xl font-bold dark:text-white">
+          <Link to="/" className="text-4xl font-bold">
             <span className="px-3 py-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white">
               Naqeebs&apos;s
             </span>
@@ -72,7 +72,7 @@ const SignUp = () => {
                 id="username"
                 type="text"
                 placeholder="Username"
-                className="p-2 mt-1 w-full bg-gray-100 outline-teal-400 rounded-lg"
+                className="p-2 mt-1 w-full bg-gray-100 dark:bg-gray-600 focus:outline-none focus:ring focus:border-teal-400 rounded-lg"
                 onChange={handleChange}
               />
             </div>
@@ -84,7 +84,7 @@ const SignUp = () => {
                 id="email"
                 type="email"
                 placeholder="name@email.com"
-                className="mt-1 p-2 w-full bg-gray-100 outline-teal-400 rounded-lg"
+                className="mt-1 p-2 w-full bg-gray-100 dark:bg-gray-600 focus:outline-none focus:ring focus:border-teal-400 rounded-lg"
                 onChange={handleChange}
               />
             </div>
@@ -96,7 +96,7 @@ const SignUp = () => {
                 id="password"
                 type="password"
                 placeholder="Password"
-                className="p-2 mt-1 w-full bg-gray-100 outline-teal-400 rounded-lg"
+                className="p-2 mt-1 w-full bg-gray-100 dark:bg-gray-600 focus:outline-none focus:ring focus:border-teal-400 rounded-lg"
                 onChange={handleChange}
               />
             </div>
