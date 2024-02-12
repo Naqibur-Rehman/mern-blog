@@ -23,7 +23,7 @@ const Dashboard = () => {
         <DashSidebar />
       </div>
       <div className="flex md:hidden ">
-        <div className="p-2 flex flex-row justify-between items-center shadow-md fixed">
+        <div className="p-2 flex flex-row justify-between items-center shadow-md">
           <HiMenu
             size={24}
             className="cursor-pointer"
