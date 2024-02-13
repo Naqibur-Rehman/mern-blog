@@ -40,7 +40,9 @@ export const updateUser = async (req, res, next) => {
       return next(errorHandler(400, "Username must be lowercase"));
     }
     if (!req.body.username.match(/^[a-zA-Z0-9]*$/)) {
-      return next(errorHandler(400, "Username can only have letters and numbers"));
+      return next(
+        errorHandler(400, "Username can only have letters and numbers")
+      );
     }
 
     try {
@@ -57,17 +59,10 @@ export const updateUser = async (req, res, next) => {
         { new: true }
       );
 
-      res
-        .status(200)
-        .json({
-          id: updatedUser._id,
-          username: updatedUser.username,
-          email: updatedUser.email,
-          profilePicture: updatedUser.profilePicture,
-        });
+      const { password, ...rest } = updatedUser._doc;
+      res.status(200).json(rest);
     } catch (error) {
-      return next(error);
-      // return next(errorHandler(500, "Something went wrong. Try again"));
+      return next(errorHandler(500, error.message + "Something went wrong. Try again"));
     }
   }
 };

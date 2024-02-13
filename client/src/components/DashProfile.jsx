@@ -1,15 +1,19 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   getDownloadURL,
   getStorage,
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { app } from "../firebase";
+import {
+  updateStart,
+  updateSuccess,
+  updateFailure,
+} from "../redux/user/userSlice";
 
 const DashProfile = () => {
   const [formData, setFormData] = useState({});
@@ -18,14 +22,12 @@ const DashProfile = () => {
   const filePickerRef = useRef();
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(0);
   const [imageFileUploadError, setImageFileUploadError] = useState(null);
-  //   const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const { currentUser } = useSelector((state) => state.user);
-  //   const navigate = useNavigate();
+  const [isImageUploading, setIsImageUploading] = useState(false);
+  const [userUpdateSuccess, setUserUpdateSuccess] = useState(false);
+  const [userUpdateError, setUserUpdateError] = useState(false)
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
-  };
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
 
   const handeImageFile = (e) => {
     const file = e.target.files[0];
@@ -42,6 +44,7 @@ const DashProfile = () => {
   }, [imageFile]);
 
   const uploadImage = async () => {
+    setIsImageUploading(true);
     setImageFileUploadError(null);
     const storage = getStorage(app);
     const fileName = new Date().getTime() + imageFile.name;
@@ -61,22 +64,58 @@ const DashProfile = () => {
         setImageFileUploadProgress(null);
         setImageFile(null);
         setImageFileUrl(null);
+        setIsImageUploading(false);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setImageFileUrl(downloadURL);
+          setFormData({ ...formData, profilePicture: downloadURL });
+          setIsImageUploading(false);
         });
       }
     );
   };
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+  };
+
   const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     if (!formData.username || !formData.email || !formData.password) {
-    //         return setErrorMessage("All the fields are required!");
-    //     } else {
-    //         setErrorMessage(null);
-    //     }
+    e.preventDefault();
+    setUserUpdateError(null)
+    setUserUpdateSuccess(null)
+    if (Object.keys(formData).length === 0) {
+      setUserUpdateError("No changes made")
+      return;
+    }
+
+    if (isImageUploading) {
+      setUserUpdateError("Image is uploading please wait")   
+      return;
+    }
+
+    try {
+      dispatch(updateStart);
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(updateFailure(data.message));
+        setUserUpdateError(data.message)
+      } else {
+        dispatch(updateSuccess(data));
+        setUserUpdateSuccess("User's profile updated successfully");
+      }
+    } catch (error) {
+      dispatch(updateFailure(error.message));
+      setUserUpdateError(error.message)
+    }
   };
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
@@ -174,7 +213,7 @@ const DashProfile = () => {
           <button
             type="submit"
             className="w-full py-2 rounded-lg bg-white hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 text-black hover:text-white"
-            disabled={loading}
+            disabled={useSelector((state) => state.loading)}
           >
             {/* {loading ? (
               <>
@@ -207,6 +246,16 @@ const DashProfile = () => {
         <span className="cursor-pointer">Delete Account</span>
         <span className="cursor-pointer">Sign Out</span>
       </div>
+      {userUpdateSuccess && (
+        <div className="p-3 mt-5 rounded-lg text-sm bg-green-200 text-green-600">
+          {userUpdateSuccess}
+        </div>
+      )}
+      {userUpdateError && (
+        <div className="p-3 mt-5 rounded-lg text-sm bg-red-200 text-red-700">
+          {userUpdateError}
+        </div>
+      )}
     </div>
   );
 };

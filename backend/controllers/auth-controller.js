@@ -84,14 +84,8 @@ export const signin = async (req, res, next) => {
       process.env.JWT_SECRET_KEY,
       { expiresIn: "1h" }
     );
-
-    res.status(200).cookie("access_token", token, { httpOnly: true }).json({
-      userId: existingUser._id,
-      email: existingUser.email,
-      username: existingUser.username,
-      profilePicture: existingUser.profilePicture,
-      token: token,
-    });
+    const { password, ...rest } = newUser._doc;
+    res.status(200).cookie("access_token", token, { httpOnly: true }).json(rest);
   } catch (error) {
     return next(errorHandler(500, "Login failed."));
   }
