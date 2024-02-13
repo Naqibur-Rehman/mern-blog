@@ -59,6 +59,7 @@ export const signup = async (req, res, next) => {
   }
 };
 
+
 export const signin = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -84,7 +85,7 @@ export const signin = async (req, res, next) => {
       process.env.JWT_SECRET_KEY,
       { expiresIn: "1h" }
     );
-    const { password, ...rest } = newUser._doc;
+    const { password: password1, ...rest } = existingUser._doc;
     res.status(200).cookie("access_token", token, { httpOnly: true }).json(rest);
   } catch (error) {
     return next(errorHandler(500, "Login failed."));
