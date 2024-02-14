@@ -16,6 +16,7 @@ import {
   deleteUserStart,
   deleteUserSuccess,
   deleteUserFailure,
+  signOutSuccess,
 } from "../redux/user/userSlice";
 import Modal from "./Modal";
 
@@ -142,6 +143,22 @@ const DashProfile = () => {
     }
   };
 
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch('/api/user/signout', {
+        method: 'POST'
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        console.log(data.message)
+      } else {
+        dispatch(signOutSuccess())
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
+
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
       <h1 className="my-7 text-center font-semibold text-3xl">Profile</h1>
@@ -248,7 +265,7 @@ const DashProfile = () => {
         <button onClick={() => setShowModal(true)} className="cursor-pointer">
           Delete Account
         </button>
-        <button className="cursor-pointer">Sign Out</button>
+        <button onClick={handleSignOut} className="cursor-pointer">Sign Out</button>
       </div>
       {userUpdateSuccess && (
         <div className="p-3 mt-5 rounded-lg text-sm bg-green-200 text-green-600">

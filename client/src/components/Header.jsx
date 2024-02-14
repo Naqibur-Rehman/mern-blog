@@ -2,17 +2,18 @@ import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch, AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { FaMoon, FaSun } from "react-icons/fa";
 import { useState } from "react";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
+import { signOutSuccess } from "../redux/user/userSlice";
 
 const Header = () => {
   const path = useLocation().pathname;
   const [toggleNav, setToggleNav] = useState(false);
   const [toggleDropdpown, setToggleDropdpown] = useState(false);
-  
-  const dispatch = useDispatch()
+
+  const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
-  const {theme} = useSelector(state => state.theme)
+  const { theme } = useSelector((state) => state.theme);
   const handleToggleNav = () => {
     setToggleNav(!toggleNav);
   };
@@ -26,6 +27,22 @@ const Header = () => {
     { id: 2, text: "About", link: "/about" },
     { id: 3, text: "Projects", link: "/projects" },
   ];
+
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signOutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <header className="px-2 sm:pl-6 md:px-6 py-3 dark:bg-gray-800 border-b-2 dark:border-gray-700">
@@ -94,7 +111,7 @@ const Header = () => {
                       className="text-sm divide-y divide-gray-100"
                       aria-labelledby="dropdownDefaultButton"
                     >
-                      <li>
+                      <li onClick={() => setToggleDropdpown(false)}>
                         <Link
                           to="/dashboard/?tab=profile"
                           className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -102,7 +119,7 @@ const Header = () => {
                           Profile
                         </Link>
                       </li>
-                      <li>
+                      <li onClick={handleSignOut}>
                         <a
                           href="#"
                           className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
