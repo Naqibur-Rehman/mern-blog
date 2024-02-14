@@ -19,6 +19,7 @@ import {
   signOutSuccess,
 } from "../redux/user/userSlice";
 import Modal from "./Modal";
+import { Link } from "react-router-dom";
 
 const DashProfile = () => {
   const [formData, setFormData] = useState({});
@@ -34,7 +35,7 @@ const DashProfile = () => {
   const [showModal, setShowModal] = useState(false);
 
   const dispatch = useDispatch();
-  const { currentUser, error } = useSelector((state) => state.user);
+  const { currentUser, error, loading } = useSelector((state) => state.user);
 
   const handeImageFile = (e) => {
     const file = e.target.files[0];
@@ -132,11 +133,11 @@ const DashProfile = () => {
       const res = await fetch(`/api/user/delete/${currentUser._id}`, {
         method: "DELETE",
       });
-      const data = await res.json()
+      const data = await res.json();
       if (!res.ok) {
-        dispatch(deleteUserFailure(data.message))
+        dispatch(deleteUserFailure(data.message));
       } else {
-        dispatch(deleteUserSuccess(data))
+        dispatch(deleteUserSuccess(data));
       }
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
@@ -145,19 +146,19 @@ const DashProfile = () => {
 
   const handleSignOut = async () => {
     try {
-      const res = await fetch('/api/user/signout', {
-        method: 'POST'
-      })
-      const data = await res.json()
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
+      });
+      const data = await res.json();
       if (!res.ok) {
-        console.log(data.message)
+        console.log(data.message);
       } else {
-        dispatch(signOutSuccess())
+        dispatch(signOutSuccess());
       }
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
-  }
+  };
 
   return (
     <div className="max-w-lg mx-auto p-3 w-full">
@@ -255,17 +256,32 @@ const DashProfile = () => {
           <button
             type="submit"
             className="w-full py-2 rounded-lg bg-white hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 text-black hover:text-white"
-            disabled={useSelector((state) => state.loading)}
+            disabled={loading || isImageUploading}
           >
-            Update
+            {loading || isImageUploading ? "Loading..." : "Update"}
           </button>
         </div>
+        {currentUser.isAdmin && (
+          <div className="p-0.5 bg-gradient-to-r hover:bg-gradient-to-l from-purple-600 to-pink-600 rounded-lg">
+            <Link to="/create-post">
+              <button
+                type="button"
+                onClick={() => console.log(" ")}
+                className="p-1.5 w-full flex justify-center items-center rounded-md font-semibold text-white"
+              >
+                Create a Post
+              </button>
+            </Link>
+          </div>
+        )}
       </form>
       <div className="flex justify-between mt-5 text-red-500">
         <button onClick={() => setShowModal(true)} className="cursor-pointer">
           Delete Account
         </button>
-        <button onClick={handleSignOut} className="cursor-pointer">Sign Out</button>
+        <button onClick={handleSignOut} className="cursor-pointer">
+          Sign Out
+        </button>
       </div>
       {userUpdateSuccess && (
         <div className="p-3 mt-5 rounded-lg text-sm bg-green-200 text-green-600">
