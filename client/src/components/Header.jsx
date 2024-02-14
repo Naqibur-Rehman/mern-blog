@@ -29,6 +29,7 @@ const Header = () => {
   ];
 
   const handleSignOut = async () => {
+    setToggleDropdpown(false)
     try {
       const res = await fetch("/api/user/signout", {
         method: "POST",

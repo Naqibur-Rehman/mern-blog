@@ -81,9 +81,10 @@ export const signin = async (req, res, next) => {
     const token = jwt.sign(
       {
         userId: existingUser._id,
+        isAdmin: existingUser.isAdmin,
       },
       process.env.JWT_SECRET_KEY,
-      { expiresIn: "1h" }
+    
     );
     const { password: password1, ...rest } = existingUser._doc;
     res.status(200).cookie("access_token", token, { httpOnly: true }).json(rest);
@@ -101,9 +102,11 @@ export const google = async (req, res, next) => {
       const token = jwt.sign(
         {
           userId: user._id,
+          isAdmin: user.isAdmin,
+
         },
         process.env.JWT_SECRET_KEY,
-        { expiresIn: "1h" }
+      
       );
       const { password, ...rest } = user._doc;
       res
@@ -129,9 +132,10 @@ export const google = async (req, res, next) => {
       const token = jwt.sign(
         {
           userId: newUser._id,
+          isAdmin: newUser.isAdmin,
         },
         process.env.JWT_SECRET_KEY,
-        { expiresIn: "1h" }
+      
       );
       const { password, ...rest } = newUser._doc;
       res
