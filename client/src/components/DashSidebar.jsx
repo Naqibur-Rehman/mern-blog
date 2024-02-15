@@ -43,7 +43,7 @@ const DashSidebar = ({ closeToggle }) => {
         <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
           <ul className="space-y-2 font-medium">
             <li>
-              <Link onClick={handleCloseSidebar} to="/dashboard/?tab=profile">
+              <Link onClick={handleCloseSidebar} to="/dashboard?tab=profile">
                 <div
                   href="#"
                   className={`flex items-center p-2 text-gray-900 rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 group ${
@@ -67,7 +67,7 @@ const DashSidebar = ({ closeToggle }) => {
             {currentUser.isAdmin && (
 
               <li>
-                <Link to="/dashboard/?tab=posts">
+                <Link to="/dashboard?tab=posts">
                   <div
                     href="#"
                     className={`flex items-center p-2 text-gray-900 rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 group ${
