@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   getDownloadURL,
   getStorage,
@@ -16,7 +17,10 @@ const CreatePost = () => {
   const [file, setFile] = useState(null);
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
   const [imageFileUploadError, setImageFileUploadError] = useState(null);
+  const [publishError, setPublishError] = useState(false);
   const [formData, setFormData] = useState({});
+
+  const navigate = useNavigate();
 
   const handleUploadImage = async () => {
     setImageFileUploadError(null);
@@ -56,19 +60,51 @@ const CreatePost = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/post/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setPublishError(data.message);
+        return;
+      }
+
+      if (res.ok) {
+        setPublishError(null);
+        navigate(`/post/${data.slug}`);
+      }
+    } catch (error) {
+      setPublishError("something went wrong");
+    }
+  };
+
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
       <h1 className="text-center my-7 font-semibold text-3xl">Create a post</h1>
-      <form className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <input
-            className="flex-1 p-2 rounded-md bg-gray-100 outline-none focus:ring-2 ring-teal-500"
+            className="flex-1 p-2 rounded-md bg-gray-100 outline-none focus:ring-2 ring-teal-500 text-black"
             type="text"
             id="title"
             placeholder="Title"
             required
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
           />
-          <select className="p-2 rounded-md bg-gray-100 text-gray-700 outline-none focus:ring-2 ring-teal-500">
+          <select
+            className="p-2 rounded-md bg-gray-100 text-gray-700 outline-none focus:ring-2 ring-teal-500"
+            onChange={(e) =>
+              setFormData({ ...formData, category: e.target.value })
+            }
+          >
             <option value="uncategorised">Select a category</option>
             <option value="javascript">JavaScript</option>
             <option value="reactjs">ReactJS</option>
@@ -79,7 +115,7 @@ const CreatePost = () => {
           <input
             type="file"
             accept="image/*"
-            className="block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-l-lg file:border-0 file: file:text-sm file:font-semibold file:bg-gray-800 file:text-white text-gray-800  bg-gray-400 rounded-lg file:cursor-pointer cursor-pointer"
+            className="block sm:w-2/3 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-l-lg file:border-0 file: file:text-sm file:font-semibold file:bg-gray-800 file:text-white text-gray-800  bg-gray-400 rounded-lg file:cursor-pointer cursor-pointer"
             onChange={(e) => setFile(e.target.files[0])}
           />
           <div className="p-0.5 bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg">
@@ -109,7 +145,11 @@ const CreatePost = () => {
         )}
         {formData.image && (
           <div>
-            <img src={formData.image} alt="post" className="h-72 w-full object-cover" />
+            <img
+              src={formData.image}
+              alt="post"
+              className="h-72 w-full object-cover"
+            />
           </div>
         )}
         <ReactQuill
@@ -117,6 +157,7 @@ const CreatePost = () => {
           placeholder="write something..."
           className="h-72 mb-12"
           required
+          onChange={(value) => setFormData({ ...formData, content: value })}
         />
         <button
           type="submit"
@@ -125,6 +166,11 @@ const CreatePost = () => {
         >
           Publish
         </button>
+        {publishError && (
+          <span className="p-3 my-2 rounded-md bg-red-300 text-red-900 text-sm">
+            {publishError}
+          </span>
+        )}
       </form>
     </div>
   );
