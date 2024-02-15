@@ -5,6 +5,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import DashSidebar from "../components/DashSidebar";
 import DashProfile from "../components/DashProfile";
 import { HiMenu } from "react-icons/hi";
+import DashPosts from "../components/DashPosts";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -45,6 +46,8 @@ const Dashboard = () => {
       </div>
       {/* profile ... */}
       <div className="w-5/6">{tab === "profile" && <DashProfile />}</div>
+      {/* posts */}
+      <div className="w-5/6">{tab === 'posts'&& <DashPosts /> }</div>
     </div>
   );
 };
