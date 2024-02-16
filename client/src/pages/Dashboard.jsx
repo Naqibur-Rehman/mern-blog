@@ -33,7 +33,7 @@ const Dashboard = () => {
         </div>
         {toggleSidebar && (
           <div className="fixed w-3/5 dark:bg-gray-800 h-screen overflow-y-auto shadow-md z-10 animate-slide-in">
-            <div className="absolute w-full flex justify-end items-center p-2 ">
+            <div className="absolute w-full flex justify-end items-center">
               <AiFillCloseCircle
                 fontSize={24}
                 className="cursor-pointer"
@@ -45,9 +45,9 @@ const Dashboard = () => {
         )}
       </div>
       {/* profile ... */}
-      <div className="w-5/6">{tab === "profile" && <DashProfile />}</div>
+      {tab === "profile" && <DashProfile />}
       {/* posts */}
-      <div className="w-5/6">{tab === 'posts'&& <DashPosts /> }</div>
+      {tab === "posts" && <DashPosts />}
     </div>
   );
 };
