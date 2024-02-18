@@ -91,9 +91,37 @@ export const deletePost = async (req, res, next) => {
   }
 
   try {
-    await Post.findByIdAndDelete(req.params.userId)
-    res.status(200).json('The post has been deleted')
+    await Post.findByIdAndDelete(req.params.userId);
+    res.status(200).json("The post has been deleted");
   } catch (error) {
-    next(error)
+    next(error);
+  }
+};
+
+export const updatePost = async (req, res, next) => {
+  // * req.params.userId = update/:userId
+  //* req.user.userId is from when we created jwt token in auth-controller we named it userId
+
+  if (!req.user.isAdmin || req.user.userId !== req.params.userId) {
+    return next(errorHandler(403, "You are not allowed to update this post"));
+  }
+
+  try {
+    const updatedPost = await Post.findByIdAndUpdate(
+      req.params.postId,
+      {
+        $set: {
+          title: req.body.title,
+          content: req.body.content,
+          category: req.body.category,
+          image: req.body.image,
+        },
+      },
+      { new: true }
+    );
+
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    next(error);
   }
 };
