@@ -81,3 +81,19 @@ export const getPosts = async (req, res, next) => {
     return next(errorHandler(501, error + "Something went wrong, try again!"));
   }
 };
+
+export const deletePost = async (req, res, next) => {
+  // * req.params.userId = update/:userId
+  //* req.user.userId is from when we created jwt token in auth-controller we named it userId
+
+  if (!req.user.isAdmin || req.user.userId !== req.params.userId) {
+    return next(errorHandler(403, "You are not allowed to delete this post"));
+  }
+
+  try {
+    await Post.findByIdAndDelete(req.params.userId)
+    res.status(200).json('The post has been deleted')
+  } catch (error) {
+    next(error)
+  }
+};

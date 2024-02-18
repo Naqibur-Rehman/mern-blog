@@ -301,7 +301,11 @@ const DashProfile = () => {
       )}
 
       {showModal && (
-        <Modal showModal={setShowModal} deleteUser={handleDeleteUser} />
+        <Modal
+          showModal={setShowModal}
+          message={"your acccount"}
+          deleteFunction={handleDeleteUser}
+        />
       )}
     </div>
   );

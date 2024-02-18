@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Modal from "./Modal";
 
 const DashPosts = () => {
   const [userPosts, setUserPosts] = useState([]);
   const [showMore, setShowMore] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [postIdToDelete, setPostIdToDelete] = useState("");
 
   const { currentUser } = useSelector((state) => state.user);
 
@@ -37,12 +40,34 @@ const DashPosts = () => {
       );
       const data = await res.json();
       if (res.ok) {
-        setUserPosts(prev => [...prev, ...data.posts])
-        if(data.posts.length < 9){
-          setShowMore(false)
+        setUserPosts((prev) => [...prev, ...data.posts]);
+        if (data.posts.length < 9) {
+          setShowMore(false);
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeletePost = async () => {
+    setShowModal(false);
+    try {
+      const res = await fetch(
+        `/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,
+        { method: "DELETE" }
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setUserPosts((prev) =>
+          prev.filter((post) => post._id !== postIdToDelete)
+        );
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -90,7 +115,13 @@ const DashPosts = () => {
                   </td>
                   <td className="px-6 py-4">{post.category}</td>
                   <td className="px-6 py-4">
-                    <span className="text-red-500 font-semibold hover:underline cursor-pointer">
+                    <span
+                      onClick={() => {
+                        setShowModal(true);
+                        setPostIdToDelete(post._id);
+                      }}
+                      className="text-red-500 font-semibold hover:underline cursor-pointer"
+                    >
                       Delete
                     </span>
                   </td>
@@ -117,6 +148,13 @@ const DashPosts = () => {
         </>
       ) : (
         <p>You have no posts yet!</p>
+      )}
+      {showModal && (
+        <Modal
+          showModal={setShowModal}
+          message={"this post"}
+          deleteFunction={handleDeletePost}
+        />
       )}
     </div>
   );
