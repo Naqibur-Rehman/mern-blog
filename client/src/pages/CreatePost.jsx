@@ -22,6 +22,23 @@ const CreatePost = () => {
 
   const navigate = useNavigate();
 
+  const modules = {
+    toolbar: [
+      [{ 'header': [1, 2, false] }],
+      ['bold', 'italic', 'underline','strike', 'blockquote', 'code-block'],
+      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+      ['link'],
+      ['clean']
+    ],
+  }
+
+  const formats = [
+    'header',
+    'bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block',
+    'list', 'bullet', 'indent',
+    'link',
+  ]
+
   const handleUploadImage = async () => {
     setImageFileUploadError(null);
     setImageFileUploadProgress(null);
@@ -109,6 +126,7 @@ const CreatePost = () => {
             <option value="javascript">JavaScript</option>
             <option value="reactjs">ReactJS</option>
             <option value="nextjs">NextJS</option>
+            <option value="anime">Anime</option>
           </select>
         </div>
         <div className="p-4 flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted">
@@ -157,6 +175,8 @@ const CreatePost = () => {
           placeholder="write something..."
           className="h-72 mb-12"
           required
+          modules={modules}
+          formats={formats}
           onChange={(value) => setFormData({ ...formData, content: value })}
         />
         <button

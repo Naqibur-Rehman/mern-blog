@@ -38,9 +38,9 @@ const DashSidebar = ({ closeToggle }) => {
   };
 
   return (
-    <div className="">
-      <aside className="min-w-64 h-screen" aria-label="Sidebar">
-        <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+    <div className="bg-gray-50 dark:bg-gray-800">
+      <aside className="min-w-64" aria-label="Sidebar">
+        <div className=" px-3 py-4 bg-gray-50 dark:bg-gray-800">
           <ul className="space-y-2 font-medium">
             <li>
               <Link onClick={handleCloseSidebar} to="/dashboard?tab=profile">
@@ -56,7 +56,9 @@ const DashSidebar = ({ closeToggle }) => {
                       tab === "profile" ? "dark:text-white" : ""
                     }`}
                   />
-                  <span className="flex-1 ms-3 whitespace-nowrap cursor-pointer">Profile</span>
+                  <span className="flex-1 ms-3 whitespace-nowrap cursor-pointer">
+                    Profile
+                  </span>
                   <span className="px-2 py-1 text-xs font-medium text-gray-800 bg-gray-300 rounded-full dark:bg-gray-900 dark:text-gray-300">
                     {currentUser.isAdmin ? "Admin" : "User"}
                   </span>

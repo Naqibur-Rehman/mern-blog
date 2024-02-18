@@ -18,9 +18,9 @@ const Dashboard = () => {
   }, [location.search]);
 
   return (
-    <div className="min-h-screen flex justify-start items-start">
+    <div className="flex min-h-screen justify-start items-start">
       {/* sidebar */}
-      <div className="hidden md:flex h-screen flex-initial">
+      <div className="hidden md:flex min-h-screen bg-gray-50 dark:bg-gray-800">
         <DashSidebar />
       </div>
       <div className="flex md:hidden ">

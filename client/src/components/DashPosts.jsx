@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 const DashPosts = () => {
   const [userPosts, setUserPosts] = useState([]);
+  const [showMore, setShowMore] = useState(true);
 
   const { currentUser } = useSelector((state) => state.user);
 
@@ -14,6 +15,9 @@ const DashPosts = () => {
         const data = await res.json();
         if (res.ok) {
           setUserPosts(data.posts);
+          if (data.posts.length < 9) {
+            setShowMore(false);
+          }
         }
       } catch (error) {
         console.log(error);
@@ -25,8 +29,24 @@ const DashPosts = () => {
     }
   }, [currentUser.isAdmin, currentUser._id]);
 
+  const handleShowMore = async () => {
+    const starIndex = userPosts.length;
+    try {
+      const res = await fetch(
+        `/api/post/getposts?userId=${currentUser._id}&startIndex=${starIndex}`
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setUserPosts(prev => [...prev, ...data.posts])
+        if(data.posts.length < 9){
+          setShowMore(false)
+        }
+      }
+    } catch (error) {}
+  };
+
   return (
-    <div className="overflow-x-auto mt-4 shadow-md sm:rounded-lg md:mx-auto scrollbar scrollbar-track-slate-100 dark:scrollbar-track-slate-700 scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-500">
+    <div className="overflow-x-auto my-4 shadow-md sm:rounded-lg md:mx-auto scrollbar scrollbar-track-slate-100 dark:scrollbar-track-slate-700 scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-500">
       {currentUser.isAdmin && userPosts.length > 0 ? (
         <>
           <table className="table-auto w-full text-left text-sm">
@@ -60,7 +80,7 @@ const DashPosts = () => {
                       </div>
                     </Link>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 w-72 text-wrap">
                     <Link
                       className="text-gray-900 dark:text-white font-semibold"
                       to={`/post/${post.slug}`}
@@ -86,6 +106,14 @@ const DashPosts = () => {
               ))}
             </tbody>
           </table>
+          {showMore && (
+            <button
+              onClick={handleShowMore}
+              className="w-full py-5 text-sm text-teal-500 self-center"
+            >
+              Show More
+            </button>
+          )}
         </>
       ) : (
         <p>You have no posts yet!</p>
