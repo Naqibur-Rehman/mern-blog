@@ -70,7 +70,7 @@ export const updateUser = async (req, res, next) => {
 };
 
 export const deleteUser = async (req, res, next) => {
-  if (req.user.userId !== req.params.userId) {
+  if (!req.user.isAdmin && req.user.userId !== req.params.userId) {
     return next(
       errorHandler(
         403,

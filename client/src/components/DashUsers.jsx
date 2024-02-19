@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import {FaCheck, FaTimes} from 'react-icons/fa'
+import { FaCheck, FaTimes } from "react-icons/fa";
 import Modal from "./Modal";
 
 const DashUsers = () => {
@@ -51,18 +51,17 @@ const DashUsers = () => {
   const handleDeleteUser = async () => {
     setShowModal(false);
     try {
-      const res = await fetch(
-        `/api/user/deleteuser/${userIdToDelete}/${currentUser._id}`,
-        { method: "DELETE" }
-      );
+      const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
+        method: "DELETE",
+      });
       const data = await res.json();
       if (res.ok) {
-        setUsers((prev) => prev.filter((post) => post._id !== userIdToDelete));
+        setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete));
       } else {
         console.log(data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 
@@ -101,7 +100,13 @@ const DashUsers = () => {
                   </td>
                   <td className="px-6 py-4">{user.username}</td>
                   <td className="px-6 py-4">{user.email}</td>
-                  <td className="px-6 py-4">{user.isAdmin ? <FaCheck className="text-green-500"/> : <FaTimes className="text-red-500" />}</td>
+                  <td className="px-6 py-4">
+                    {user.isAdmin ? (
+                      <FaCheck className="text-green-500" />
+                    ) : (
+                      <FaTimes className="text-red-500" />
+                    )}
+                  </td>
                   <td className="px-6 py-4">
                     <span
                       onClick={() => {
