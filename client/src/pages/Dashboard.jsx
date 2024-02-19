@@ -6,6 +6,7 @@ import DashSidebar from "../components/DashSidebar";
 import DashProfile from "../components/DashProfile";
 import { HiMenu } from "react-icons/hi";
 import DashPosts from "../components/DashPosts";
+import DashUsers from "../components/DashUsers";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -20,7 +21,7 @@ const Dashboard = () => {
   return (
     <div className="flex min-h-screen justify-start items-start">
       {/* sidebar */}
-      <div className="hidden md:flex min-h-screen bg-gray-50 dark:bg-gray-800">
+      <div className="hidden md:flex min-h-screen h-full bg-gray-50 dark:bg-gray-800">
         <DashSidebar />
       </div>
       <div className="flex md:hidden ">
@@ -32,7 +33,7 @@ const Dashboard = () => {
           />
         </div>
         {toggleSidebar && (
-          <div className="fixed w-3/5 dark:bg-gray-800 h-screen overflow-y-auto shadow-md z-10 animate-slide-in">
+          <div className="fixed w-3/5 top-0 dark:bg-gray-800 h-screen overflow-y-auto shadow-md z-10 animate-slide-in">
             <div className="absolute w-full flex justify-end items-center">
               <AiFillCloseCircle
                 fontSize={24}
@@ -48,6 +49,8 @@ const Dashboard = () => {
       {tab === "profile" && <DashProfile />}
       {/* posts */}
       {tab === "posts" && <DashPosts />}
+      {/* users */}
+      {tab === "users" && <DashUsers />}
     </div>
   );
 };
