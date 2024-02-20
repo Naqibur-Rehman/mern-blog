@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Modal from "./Modal";
+import Spinner from "./Spinner";
 
 const DashPosts = () => {
+  const [loading, setLoading] = useState(true);
   const [userPosts, setUserPosts] = useState([]);
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -13,17 +15,20 @@ const DashPosts = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true);
       try {
         const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`);
         const data = await res.json();
         if (res.ok) {
           setUserPosts(data.posts);
+          setLoading(false);
           if (data.posts.length < 9) {
             setShowMore(false);
           }
         }
       } catch (error) {
         console.log(error);
+        setLoading(false);
       }
     };
 
@@ -70,9 +75,17 @@ const DashPosts = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="mx-auto min-h-screen">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-x-auto my-4 shadow-md sm:rounded-lg md:mx-auto scrollbar scrollbar-track-slate-100 dark:scrollbar-track-slate-700 scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-500">
-      {currentUser.isAdmin && userPosts.length > 0 ? (
+      {currentUser?.isAdmin && userPosts?.length > 0 ? (
         <>
           <table className="table-auto w-full text-left text-sm">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

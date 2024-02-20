@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import Modal from "./Modal";
+import Spinner from "./Spinner";
 
 const DashUsers = () => {
+  const [loading, setLoading] = useState(true)
   const [users, setUsers] = useState([]);
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -13,17 +15,20 @@ const DashUsers = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
+      setLoading(true)
       try {
         const res = await fetch(`/api/user/getusers`);
         const data = await res.json();
         if (res.ok) {
           setUsers(data.users);
+          setLoading(false)
           if (data.users.length < 9) {
             setShowMore(false);
           }
         }
       } catch (error) {
         console.log(error);
+        setLoading(false)
       }
     };
 
@@ -64,6 +69,15 @@ const DashUsers = () => {
       console.log(error.message);
     }
   };
+
+ if (loading) {
+   return (
+     <div className="mx-auto min-h-screen">
+       <Spinner />
+     </div>
+   );
+ }
+
 
   return (
     <div className="overflow-x-auto my-4 shadow-md sm:rounded-lg md:mx-auto scrollbar scrollbar-track-slate-100 dark:scrollbar-track-slate-700 scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-500">

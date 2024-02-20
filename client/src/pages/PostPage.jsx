@@ -36,7 +36,11 @@ export default function PostPage() {
   }, [postSlug]);
 
   if (loading) {
-    return <Spinner />;
+    return (
+      <div className="min-h-screen">
+        <Spinner />{" "}
+      </div>
+    );
   }
 
   return (
