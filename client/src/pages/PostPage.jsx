@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import CallToAction from "../components/CallToAction";
+import CommentSection from "../components/CommentSection";
 
 export default function PostPage() {
   const [post, setPost] = useState(null);
@@ -76,6 +77,7 @@ export default function PostPage() {
       <div className="max-w-4xl mx-auto w-full">
         <CallToAction />
       </div>
+      <CommentSection postId={post?._id} />
     </main>
   );
 }

@@ -59,7 +59,6 @@ export const signup = async (req, res, next) => {
   }
 };
 
-
 export const signin = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -83,11 +82,13 @@ export const signin = async (req, res, next) => {
         userId: existingUser._id,
         isAdmin: existingUser.isAdmin,
       },
-      process.env.JWT_SECRET_KEY,
-    
+      process.env.JWT_SECRET_KEY
     );
     const { password: password1, ...rest } = existingUser._doc;
-    res.status(200).cookie("access_token", token, { httpOnly: true }).json(rest);
+    res
+      .status(200)
+      .cookie("access_token", token, { httpOnly: true })
+      .json(rest);
   } catch (error) {
     return next(errorHandler(500, "Login failed."));
   }
@@ -103,10 +104,8 @@ export const google = async (req, res, next) => {
         {
           userId: user._id,
           isAdmin: user.isAdmin,
-
         },
-        process.env.JWT_SECRET_KEY,
-      
+        process.env.JWT_SECRET_KEY
       );
       const { password, ...rest } = user._doc;
       res
@@ -134,8 +133,7 @@ export const google = async (req, res, next) => {
           userId: newUser._id,
           isAdmin: newUser.isAdmin,
         },
-        process.env.JWT_SECRET_KEY,
-      
+        process.env.JWT_SECRET_KEY
       );
       const { password, ...rest } = newUser._doc;
       res

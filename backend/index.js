@@ -6,13 +6,14 @@ import cookieParser from "cookie-parser";
 import userRoutes from "./routes/user-routes.js";
 import authRoutes from "./routes/auth-routes.js";
 import postRoutes from "./routes/post-route.js";
+import commentRoutes from "./routes/comment-route.js";
 
 dotenv.config();
 
 const app = express();
 
-app.use(express.json())
-app.use(cookieParser())
+app.use(express.json());
+app.use(cookieParser());
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -25,16 +26,18 @@ app.listen(3000, () => {
 
 app.use("/api/user", userRoutes);
 
-app.use("/api/auth", authRoutes)
+app.use("/api/auth", authRoutes);
 
-app.use("/api/post", postRoutes)
+app.use("/api/post", postRoutes);
+
+app.use("/api/comment", commentRoutes);
 
 app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500
-  const message = err.message
+  const statusCode = err.statusCode || 500;
+  const message = err.message;
   res.status(statusCode).json({
     success: false,
     statusCode,
-    message
-  })
-})
+    message,
+  });
+});
