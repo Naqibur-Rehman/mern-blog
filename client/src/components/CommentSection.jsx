@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Comment from "./Comment";
 
 const CommentSection = ({ postId }) => {
   const [comment, setComment] = useState("");
+  const [postComments, setPostComments] = useState([]);
   const [commentError, setCommentError] = useState(null);
 
   const { currentUser } = useSelector((state) => state.user);
@@ -28,6 +30,7 @@ const CommentSection = ({ postId }) => {
       const data = await res.json();
       if (res.ok) {
         setComment("");
+        setPostComments((prev) => [data, ...prev]);
         setCommentError(null);
       }
     } catch (error) {
@@ -35,6 +38,23 @@ const CommentSection = ({ postId }) => {
       setCommentError(error.message);
     }
   };
+
+  console.log(postComments);
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const res = await fetch(`/api/comment/getPostComments/${postId}`);
+        const data = await res.json();
+        if (res.ok) {
+          setPostComments(data);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    getComments();
+  }, [postId]);
 
   return (
     <div className="p-3 max-w-3xl mx-auto w-full">
@@ -92,6 +112,21 @@ const CommentSection = ({ postId }) => {
             </span>
           )}
         </form>
+      )}
+      {postComments.length === 0 ? (
+        <p className="my-5 text-sm text-center">No Comments Yet!</p>
+      ) : (
+        <div>
+          <div className="flex items-center gap-1 my-5 px-3 text-sm">
+            <p>Comments</p>
+            <div className="border border-gray-500 px-2 py-0.5 rounded-sm">
+              <p>{postComments.length}</p>
+            </div>
+          </div>
+          {postComments.map((comment) => (
+            <Comment key={comment._id} comment={comment} />
+          ))}
+        </div>
       )}
     </div>
   );
