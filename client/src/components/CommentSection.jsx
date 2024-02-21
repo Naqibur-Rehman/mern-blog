@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Comment from "./Comment";
 
+// eslint-disable-next-line react/prop-types
 const CommentSection = ({ postId }) => {
   const [comment, setComment] = useState("");
   const [postComments, setPostComments] = useState([]);
@@ -86,6 +87,18 @@ const CommentSection = ({ postId }) => {
     }
   };
 
+  const handleEditComment = async (comment, editedContent) => {
+    try {
+      setPostComments(
+        postComments.map((c) =>
+          c._id === comment._id ? { ...c, content: editedContent } : c
+        )
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="p-3 max-w-3xl mx-auto w-full">
       {currentUser ? (
@@ -159,6 +172,7 @@ const CommentSection = ({ postId }) => {
                 key={comment?._id}
                 comment={comment}
                 onLike={handleLike}
+                onEdit={handleEditComment}
               />
             ))}
         </div>
