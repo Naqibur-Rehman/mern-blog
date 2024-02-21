@@ -37,6 +37,8 @@ body {
 }
 
 .post-content pre {
+    display: flex;
+    text-wrap: wrap;
     padding: 0.5rem;
     background-color: #23241f;
     color: white;

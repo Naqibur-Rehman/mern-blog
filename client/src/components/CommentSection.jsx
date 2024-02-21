@@ -113,8 +113,8 @@ const CommentSection = ({ postId }) => {
         method: "DELETE",
       });
       if (res.ok) {
-          const data = await res.json();
-          setShowModal(false)
+        const data = await res.json();
+        setShowModal(false);
         setPostComments(
           postComments.filter((comment) => comment._id !== commentToDelete)
         );
