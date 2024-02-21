@@ -114,6 +114,7 @@ const CommentSection = ({ postId }) => {
       });
       if (res.ok) {
         const data = await res.json();
+        console.log(data);
         setShowModal(false);
         setPostComments(
           postComments.filter((comment) => comment._id !== commentToDelete)
@@ -121,6 +122,7 @@ const CommentSection = ({ postId }) => {
       }
     } catch (error) {
       console.log(error);
+      setShowModal(false);
     }
   };
 

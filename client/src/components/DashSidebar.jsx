@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { HiUser, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup } from "react-icons/hi";
+import { HiUser, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup, HiAnnotation } from "react-icons/hi";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signOutSuccess } from "../redux/user/userSlice";
@@ -103,6 +103,27 @@ const DashSidebar = ({ closeToggle }) => {
                       }`}
                     />
                     <span className="flex-1 ms-3 whitespace-nowrap">Users</span>
+                  </div>
+                </Link>
+              </li>
+            )}
+            {currentUser.isAdmin && (
+              <li>
+                <Link onClick={handleCloseSidebar} to="/dashboard?tab=comments">
+                  <div
+                    href="#"
+                    className={`flex items-center cursor-pointer p-2 text-gray-900 rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 group ${
+                      tab === "comments"
+                        ? "bg-gray-100 dark:bg-gray-700 dark:text-white"
+                        : ""
+                    }`}
+                  >
+                    <HiAnnotation
+                      className={`flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white ${
+                        tab === "comments" ? "dark:text-white" : ""
+                      }`}
+                    />
+                    <span className="flex-1 ms-3 whitespace-nowrap">Comments</span>
                   </div>
                 </Link>
               </li>

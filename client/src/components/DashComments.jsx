@@ -1,28 +1,27 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import Modal from "./Modal";
 import Spinner from "./Spinner";
 
-const DashPosts = () => {
+const DashComments = () => {
   const [loading, setLoading] = useState(true);
-  const [userPosts, setUserPosts] = useState([]);
+  const [comments, setComments] = useState([]);
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [postIdToDelete, setPostIdToDelete] = useState("");
+  const [commentIdToDelete, setCommentIdToDelete] = useState("");
 
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchComments = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`);
+        const res = await fetch(`/api/comment/getComments`);
         const data = await res.json();
         if (res.ok) {
-          setUserPosts(data.posts);
+          setComments(data.comments);
           setLoading(false);
-          if (data.posts.length < 9) {
+          if (data.comments.length < 9) {
             setShowMore(false);
           }
         }
@@ -33,20 +32,20 @@ const DashPosts = () => {
     };
 
     if (currentUser.isAdmin) {
-      fetchPosts();
+      fetchComments();
     }
   }, [currentUser.isAdmin, currentUser._id]);
 
   const handleShowMore = async () => {
-    const starIndex = userPosts.length;
+    const starIndex = comments.length;
     try {
       const res = await fetch(
-        `/api/post/getposts?userId=${currentUser._id}&startIndex=${starIndex}`
+        `/api/comment/getcomments?startIndex=${starIndex}`
       );
       const data = await res.json();
       if (res.ok) {
-        setUserPosts((prev) => [...prev, ...data.posts]);
-        if (data.posts.length < 9) {
+        setComments((prev) => [...prev, ...data.comments]);
+        if (data.comments.length < 9) {
           setShowMore(false);
         }
       }
@@ -55,23 +54,22 @@ const DashPosts = () => {
     }
   };
 
-  const handleDeletePost = async () => {
+  const handleDeleteComment = async () => {
     setShowModal(false);
     try {
-      const res = await fetch(
-        `/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,
-        { method: "DELETE" }
-      );
+      const res = await fetch(`/api/comment/deleteComment/${commentIdToDelete}`, {
+        method: "DELETE",
+      });
       const data = await res.json();
       if (res.ok) {
-        setUserPosts((prev) =>
-          prev.filter((post) => post._id !== postIdToDelete)
+        setComments((prev) =>
+          prev.filter((comment) => comment._id !== commentIdToDelete)
         );
       } else {
         console.log(data.message);
       }
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 
@@ -85,66 +83,42 @@ const DashPosts = () => {
 
   return (
     <div className="overflow-x-auto my-4 shadow-md sm:rounded-lg md:mx-auto scrollbar scrollbar-track-slate-100 dark:scrollbar-track-slate-700 scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-500">
-      {currentUser?.isAdmin && userPosts?.length > 0 ? (
+      {currentUser.isAdmin && comments.length > 0 ? (
         <>
           <table className="table-auto w-full text-left text-sm">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th className="px-6 py-4">Date Updated</th>
-                <th className="p-4">Post Image</th>
-                <th className="p-4">Post Title</th>
-                <th className="p-4">Category</th>
-                <th className="p-4">Delete</th>
-                <th className="px-6 py-4">Edit</th>
+                <th className="p-4">Comment Content</th>
+                <th className="p-4">Number of Likes</th>
+                <th className="p-4">PostId</th>
+                <th className="p-4">UserId</th>
+                <th className="px-6 py-4">Delete</th>
               </tr>
             </thead>
             <tbody className="divide-y">
-              {userPosts.map((post) => (
+              {comments.map((comment) => (
                 <tr
-                  key={post._id}
+                  key={comment._id}
                   className="bg-white  hover:bg-gray-50 dark:hover:bg-gray-600 dark:border-gray-700 dark:bg-gray-800"
                 >
                   <td className="px-6 py-4">
-                    {new Date(post.updatedAt).toLocaleDateString()}
+                    {new Date(comment.updatedAt).toLocaleDateString()}
                   </td>
-                  <td className="p-4">
-                    <Link to={`/post/${post.slug}`}>
-                      <div className="flex w-24">
-                        <img
-                          src={post.image}
-                          alt={post.title}
-                          className="object-cover bg-gray-500"
-                        />
-                      </div>
-                    </Link>
-                  </td>
-                  <td className="p-4 max-w-[440px]">
-                    <Link
-                      className="text-gray-900 dark:text-white font-semibold"
-                      to={`/post/${post.slug}`}
-                    >
-                      <span className="line-clamp-2">{post.title}</span>
-                    </Link>
-                  </td>
-                  <td className="p-4">{post.category}</td>
-                  <td className="p-4">
+                  <td className="p-4">{comment.content}</td>
+                  <td className="p-4">{comment.numberOfLikes}</td>
+                  <td className="p-4">{comment.postId}</td>
+                  <td className="p-4">{comment.userId}</td>
+                  <td className="px-6 py-4">
                     <span
                       onClick={() => {
                         setShowModal(true);
-                        setPostIdToDelete(post._id);
+                        setCommentIdToDelete(comment._id);
                       }}
                       className="text-red-500 font-semibold hover:underline cursor-pointer"
                     >
                       Delete
                     </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <Link
-                      className="text-teal-500 hover:underline cursor-pointer"
-                      to={`/update-post/${post._id}`}
-                    >
-                      Edit
-                    </Link>
                   </td>
                 </tr>
               ))}
@@ -160,17 +134,17 @@ const DashPosts = () => {
           )}
         </>
       ) : (
-        <p>You have no posts yet!</p>
+        <p>No users found!</p>
       )}
       {showModal && (
         <Modal
           showModal={setShowModal}
-          message={"this post"}
-          deleteFunction={handleDeletePost}
+          message={"this comment"}
+          deleteFunction={handleDeleteComment}
         />
       )}
     </div>
   );
 };
 
-export default DashPosts;
+export default DashComments;
