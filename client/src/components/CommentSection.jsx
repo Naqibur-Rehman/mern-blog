@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Comment from "./Comment";
+import Modal from "./Modal";
 
 // eslint-disable-next-line react/prop-types
 const CommentSection = ({ postId }) => {
   const [comment, setComment] = useState("");
   const [postComments, setPostComments] = useState([]);
   const [commentError, setCommentError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState(null);
 
   const { currentUser } = useSelector((state) => state.user);
 
@@ -99,6 +102,28 @@ const CommentSection = ({ postId }) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      if (!currentUser) {
+        navigate("/sign-in");
+        return;
+      }
+
+      const res = await fetch(`/api/comment/deleteComment/${commentToDelete}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+          const data = await res.json();
+          setShowModal(false)
+        setPostComments(
+          postComments.filter((comment) => comment._id !== commentToDelete)
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="p-3 max-w-3xl mx-auto w-full">
       {currentUser ? (
@@ -173,8 +198,19 @@ const CommentSection = ({ postId }) => {
                 comment={comment}
                 onLike={handleLike}
                 onEdit={handleEditComment}
+                onDelete={(commentId) => {
+                  setShowModal(true);
+                  setCommentToDelete(commentId);
+                }}
               />
             ))}
+          {showModal && (
+            <Modal
+              message="this comment"
+              showModal={setShowModal}
+              deleteFunction={handleDelete}
+            />
+          )}
         </div>
       )}
     </div>

@@ -1,5 +1,6 @@
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
+// eslint-disable-next-line react/prop-types
 const Modal = ({ showModal, message, deleteFunction }) => {
   return (
     <div className="overflow-y-auto bg-[rgba(0,0,0,0.7)] overflow-x-hidden fixed left-0 right-0 top-0  z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
