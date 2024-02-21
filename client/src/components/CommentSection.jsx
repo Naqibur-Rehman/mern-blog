@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Comment from "./Comment";
 
 const CommentSection = ({ postId }) => {
@@ -9,6 +9,8 @@ const CommentSection = ({ postId }) => {
   const [commentError, setCommentError] = useState(null);
 
   const { currentUser } = useSelector((state) => state.user);
+
+  const navigate = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -39,7 +41,6 @@ const CommentSection = ({ postId }) => {
     }
   };
 
-  console.log(postComments);
   useEffect(() => {
     const getComments = async () => {
       try {
@@ -55,6 +56,35 @@ const CommentSection = ({ postId }) => {
 
     getComments();
   }, [postId]);
+
+  const handleLike = async (commentId) => {
+    try {
+      if (!currentUser) {
+        navigate("/sign-in");
+        return;
+      }
+
+      const res = await fetch(`/api/comment/likeComment/${commentId}`, {
+        method: "PUT",
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setPostComments(
+          postComments.map((comment) =>
+            comment._id === commentId
+              ? {
+                  ...comment,
+                  likes: data.likes,
+                  numberOfLikes: data.numberOfLikes,
+                }
+              : comment
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <div className="p-3 max-w-3xl mx-auto w-full">
@@ -123,9 +153,14 @@ const CommentSection = ({ postId }) => {
               <p>{postComments.length}</p>
             </div>
           </div>
-          {postComments.map((comment) => (
-            <Comment key={comment._id} comment={comment} />
-          ))}
+          {postComments &&
+            postComments.map((comment) => (
+              <Comment
+                key={comment?._id}
+                comment={comment}
+                onLike={handleLike}
+              />
+            ))}
         </div>
       )}
     </div>
