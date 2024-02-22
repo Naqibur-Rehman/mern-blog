@@ -8,6 +8,7 @@ import { HiMenu } from "react-icons/hi";
 import DashPosts from "../components/DashPosts";
 import DashUsers from "../components/DashUsers";
 import DashComments from "../components/DashComments";
+import DashboardComponent from "../components/DashboardComponent";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -20,12 +21,12 @@ const Dashboard = () => {
   }, [location.search]);
 
   return (
-    <div className="flex min-h-screen justify-start items-start">
+    <div className="flex min-h-0 justify-start">
       {/* sidebar */}
-      <div className="hidden md:flex min-h-screen h-full bg-gray-50 dark:bg-gray-800">
-        <DashSidebar />
+      <div className="hidden md:flex bg-gray-50 dark:bg-gray-800">
+        <DashSidebar className="" />
       </div>
-      <div className="flex md:hidden ">
+      <div className="flex md:hidden absolute ">
         <div className="p-2 flex flex-row justify-between items-center shadow-md">
           <HiMenu
             size={24}
@@ -46,14 +47,18 @@ const Dashboard = () => {
           </div>
         )}
       </div>
-      {/* profile ... */}
-      {tab === "profile" && <DashProfile />}
-      {/* posts */}
-      {tab === "posts" && <DashPosts />}
-      {/* users */}
-      {tab === "users" && <DashUsers />}
-      {/* comments */}
-      {tab == 'comments' && <DashComments />}
+      <div className="mt-8 md:mt-0">
+        {/* profile ... */}
+        {tab === "profile" && <DashProfile />}
+        {/* posts */}
+        {tab === "posts" && <DashPosts />}
+        {/* users */}
+        {tab === "users" && <DashUsers />}
+        {/* comments */}
+        {tab == "comments" && <DashComments />}
+        {/* dashboard component */}
+        {(tab === "dash" || tab === null) && <DashboardComponent />}
+      </div>
     </div>
   );
 };

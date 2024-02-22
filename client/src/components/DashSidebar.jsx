@@ -1,5 +1,13 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
-import { HiUser, HiArrowSmRight, HiDocumentText, HiOutlineUserGroup, HiAnnotation } from "react-icons/hi";
+import {
+  HiUser,
+  HiArrowSmRight,
+  HiDocumentText,
+  HiOutlineUserGroup,
+  HiAnnotation,
+  HiChartPie,
+} from "react-icons/hi";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signOutSuccess } from "../redux/user/userSlice";
@@ -38,10 +46,33 @@ const DashSidebar = ({ closeToggle }) => {
   };
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-800">
+    <div className="min-h-screen h-full bg-gray-50 dark:bg-gray-800">
       <aside className="min-w-64" aria-label="Sidebar">
-        <div className=" px-3 py-4 bg-gray-50 dark:bg-gray-800">
+        <div className="px-3 py-4 bg-gray-50 dark:bg-gray-800">
           <ul className="space-y-2 font-medium">
+            {currentUser.isAdmin && (
+              <li>
+                <Link onClick={handleCloseSidebar} to="/dashboard?tab=dash">
+                  <div
+                    href="#"
+                    className={`flex items-center cursor-pointer p-2 text-gray-900 rounded-lg dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 group ${
+                      tab === "dash" || !tab
+                        ? "bg-gray-100 dark:bg-gray-700 dark:text-white"
+                        : ""
+                    }`}
+                  >
+                    <HiChartPie
+                      className={`flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white ${
+                        tab === "dash" ? "dark:text-white" : ""
+                      }`}
+                    />
+                    <span className="flex-1 ms-3 whitespace-nowrap">
+                      Dashboard
+                    </span>
+                  </div>
+                </Link>
+              </li>
+            )}
             <li>
               <Link onClick={handleCloseSidebar} to="/dashboard?tab=profile">
                 <div
@@ -123,7 +154,9 @@ const DashSidebar = ({ closeToggle }) => {
                         tab === "comments" ? "dark:text-white" : ""
                       }`}
                     />
-                    <span className="flex-1 ms-3 whitespace-nowrap">Comments</span>
+                    <span className="flex-1 ms-3 whitespace-nowrap">
+                      Comments
+                    </span>
                   </div>
                 </Link>
               </li>
