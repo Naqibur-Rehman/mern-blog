@@ -122,7 +122,7 @@ const CreatePost = () => {
               setFormData({ ...formData, category: e.target.value })
             }
           >
-            <option value="uncategorised">Select a category</option>
+            <option value="uncategorized">Select a category</option>
             <option value="javascript">JavaScript</option>
             <option value="reactjs">ReactJS</option>
             <option value="nextjs">NextJS</option>

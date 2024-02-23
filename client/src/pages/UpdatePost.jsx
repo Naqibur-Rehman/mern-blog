@@ -10,7 +10,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import {useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
 
 import { app } from "../firebase";
 
@@ -24,8 +24,8 @@ const UpdatePost = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
 
-    const {currentUser} = useSelector(state => state.user)
-    
+  const { currentUser } = useSelector((state) => state.user);
+
   useEffect(() => {
     try {
       const fetchPost = async () => {
@@ -115,11 +115,14 @@ const UpdatePost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`/api/post/updatepost/${postId}/${currentUser._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        `/api/post/updatepost/${postId}/${currentUser._id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await res.json();
       if (!res.ok) {
@@ -159,7 +162,7 @@ const UpdatePost = () => {
               setFormData({ ...formData, category: e.target.value })
             }
           >
-            <option value="uncategorised">Select a category</option>
+            <option value="uncategorized">Select a category</option>
             <option value="javascript">JavaScript</option>
             <option value="reactjs">ReactJS</option>
             <option value="nextjs">NextJS</option>

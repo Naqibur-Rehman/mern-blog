@@ -1,19 +1,32 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { AiOutlineSearch, AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { FaMoon, FaSun } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
 import { signOutSuccess } from "../redux/user/userSlice";
 
 const Header = () => {
   const path = useLocation().pathname;
+  const loaction = useLocation();
+  const navigate = useNavigate()
+
   const [toggleNav, setToggleNav] = useState(false);
   const [toggleDropdpown, setToggleDropdpown] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(loaction.search);
+    const searchTermFromUrl = urlParams.get("searchTerm");
+    if (searchTermFromUrl) {
+      setSearchTerm(searchTermFromUrl);
+    }
+  }, [location.search]);
+
   const handleToggleNav = () => {
     setToggleNav(!toggleNav);
   };
@@ -29,7 +42,7 @@ const Header = () => {
   ];
 
   const handleSignOut = async () => {
-    setToggleDropdpown(false)
+    setToggleDropdpown(false);
     try {
       const res = await fetch("/api/user/signout", {
         method: "POST",
@@ -43,6 +56,14 @@ const Header = () => {
     } catch (error) {
       console.log(error.message);
     }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("searchTerm", searchTerm);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`)
   };
 
   return (
@@ -59,25 +80,27 @@ const Header = () => {
             Blog
           </Link>
 
-          <form>
-            <div className="items-center p-2 border dark:border-0 rounded-lg bg-slate-100 hidden dark:bg-gray-600 lg:inline-flex">
+          <form onSubmit={handleSubmit}>
+            <div className="items-center relative active:ring ring-teal-500 border dark:border-0 rounded-lg bg-slate-100 hidden dark:bg-gray-600 lg:inline-flex">
               <input
-                className="bg-slate-100 w-full dark:bg-gray-600 outline-none"
+                className="bg-slate-100 block w-full p-2 pe-10 rounded-lg  dark:bg-gray-600 outline-none focus:ring-2 ring-teal-500"
                 type="text"
                 placeholder="search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <AiOutlineSearch />
+              <AiOutlineSearch className="mx-4 absolute right-0" />
             </div>
           </form>
 
-          <button className="px-2 py-2 sm:px-4 sm:py-3 mx-auto outline outline-1 rounded-3xl lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700">
+          <button className="px-2 py-2 sm:px-4 sm:py-3 mx-auto outline outline-1 rounded-3xl lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700 dark:bg-gray-900">
             <AiOutlineSearch />
           </button>
 
           <div className="flex gap-2 items-center md:order-2">
             <button
               onClick={() => dispatch(toggleTheme())}
-              className="px-4 py-3 rounded-3xl outline outline-1 hover:bg-gray-100 dark:hover:bg-gray-700 hidden sm:inline-flex"
+              className="px-4 py-3 rounded-3xl outline outline-1 hover:bg-gray-100 dark:hover:bg-gray-700 dark:bg-gray-900 hidden sm:inline-flex"
             >
               {theme === "light" ? <FaMoon /> : <FaSun />}
             </button>
@@ -142,7 +165,10 @@ const Header = () => {
               </Link>
             )}
 
-            <button onClick={handleToggleNav} className="rounded-lg md:hidden">
+            <button
+              onClick={handleToggleNav}
+              className="rounded-lg md:hidden dark:text-white"
+            >
               {toggleNav ? (
                 <AiOutlineClose size={20} />
               ) : (
