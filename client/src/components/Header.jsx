@@ -1,6 +1,7 @@
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineSearch, AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { FaMoon, FaSun } from "react-icons/fa";
+import { MdPostAdd } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
@@ -9,7 +10,7 @@ import { signOutSuccess } from "../redux/user/userSlice";
 const Header = () => {
   const path = useLocation().pathname;
   const loaction = useLocation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [toggleNav, setToggleNav] = useState(false);
   const [toggleDropdpown, setToggleDropdpown] = useState(false);
@@ -63,7 +64,7 @@ const Header = () => {
     const urlParams = new URLSearchParams(location.search);
     urlParams.set("searchTerm", searchTerm);
     const searchQuery = urlParams.toString();
-    navigate(`/search?${searchQuery}`)
+    navigate(`/search?${searchQuery}`);
   };
 
   return (
@@ -93,9 +94,9 @@ const Header = () => {
             </div>
           </form>
 
-          <button className="px-2 py-2 sm:px-4 sm:py-3 mx-auto outline outline-1 rounded-3xl lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700 dark:bg-gray-900">
+          <Link to={'/search'} className="px-2 py-2 sm:px-4 sm:py-3 mx-auto outline outline-1 rounded-3xl lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700 dark:bg-gray-900">
             <AiOutlineSearch />
-          </button>
+          </Link>
 
           <div className="flex gap-2 items-center md:order-2">
             <button
@@ -177,9 +178,9 @@ const Header = () => {
             </button>
           </div>
 
-          <div>
+          <div className="">
             {/* Desktop Navigation */}
-            <ul className="hidden gap-1 text-sm md:flex">
+            <ul className="hidden gap-1 text-sm md:flex items-center">
               {navItems.map((item) => (
                 <Link
                   id={path}
@@ -192,6 +193,25 @@ const Header = () => {
                   {item.text}
                 </Link>
               ))}
+              {currentUser?.isAdmin && (
+                <div
+                  className={`p-0.5 border-b rounded-xl dark:border-gray-600 cursor-pointer bg-gradient-to-r from-purple-500 via-blue-500 to-pink-500 hover:text-white ${
+                    path === "/create-post" ? "bg-gradient-to-r text-white" : ""
+                  }`}
+                >
+                  <Link
+                    to={"/create-post"}
+                    className={`py-1 px-2 rounded-xl flex items-center justify-center  bg-gray-50 dark:bg-gray-800 hover:bg-gradient-to-r ${
+                      path === "/create-post"
+                        ? "bg-gradient-to-r text-white"
+                        : ""
+                    } `}
+                  >
+                    <MdPostAdd size={24} className="me-2" />
+                    New Post
+                  </Link>
+                </div>
+              )}
             </ul>
           </div>
         </div>
@@ -212,6 +232,25 @@ const Header = () => {
                   </Link>
                 </div>
               ))}
+              {currentUser?.isAdmin && (
+                <div
+                  className={`p-0.5 border-b dark:border-gray-600 cursor-pointer bg-gradient-to-r from-purple-500 via-blue-500 to-pink-500 hover:text-white ${
+                    path === "/create-post" ? "bg-gradient-to-r text-white" : ""
+                  }`}
+                >
+                  <Link
+                    to={"/create-post"}
+                    className={`py-1.5 flex items-center justify-center  bg-gray-50 dark:bg-gray-800 hover:bg-gradient-to-r ${
+                      path === "/create-post"
+                        ? "bg-gradient-to-r text-white"
+                        : ""
+                    } `}
+                  >
+                    <MdPostAdd size={24} className="me-2" />
+                    New Post
+                  </Link>
+                </div>
+              )}
             </ul>
           </div>
         )}

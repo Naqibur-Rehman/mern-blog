@@ -47,7 +47,7 @@ const Dashboard = () => {
           </div>
         )}
       </div>
-      <div className="mt-8 md:mt-0">
+      <div className="mt-8 md:mt-0 w-full">
         {/* profile ... */}
         {tab === "profile" && <DashProfile />}
         {/* posts */}
