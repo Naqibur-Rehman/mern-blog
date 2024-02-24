@@ -87,7 +87,7 @@ export const signin = async (req, res, next) => {
     const { password: password1, ...rest } = existingUser._doc;
     res
       .status(200)
-      .cookie("access_token", token, { httpOnly: true })
+      .cookie("access_token", token, { httpOnly: true, sameSite: "none" })
       .json(rest);
   } catch (error) {
     return next(errorHandler(500, "Login failed."));
@@ -110,7 +110,7 @@ export const google = async (req, res, next) => {
       const { password, ...rest } = user._doc;
       res
         .status(200)
-        .cookie("access_token", token, { httpOnly: true })
+        .cookie("access_token", token, { httpOnly: true, sameSite: "none" })
         .json(rest);
     } else {
       const generatedPassword =
