@@ -27,6 +27,7 @@ const CommentSection = ({ postId }) => {
       setCommentError(null);
       const res = await fetch(`${server}/api/comment/create`, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           content: comment,
@@ -75,6 +76,7 @@ const CommentSection = ({ postId }) => {
         `${server}/api/comment/likeComment/${commentId}`,
         {
           method: "PUT",
+          credentials: "include",
         }
       );
       if (res.ok) {
@@ -119,6 +121,7 @@ const CommentSection = ({ postId }) => {
         `${server}/api/comment/deleteComment/${commentToDelete}`,
         {
           method: "DELETE",
+          credentials: "include",
         }
       );
       if (res.ok) {

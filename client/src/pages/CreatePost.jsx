@@ -95,6 +95,7 @@ const CreatePost = () => {
     try {
       const res = await fetch(`${server}/api/post/create`, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });

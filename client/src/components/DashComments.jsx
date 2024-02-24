@@ -17,7 +17,9 @@ const DashComments = () => {
     const fetchComments = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${server}/api/comment/getComments`);
+        const res = await fetch(`${server}/api/comment/getComments`, {
+          credentials: "include",
+        });
         const data = await res.json();
         if (res.ok) {
           setComments(data.comments);
@@ -41,7 +43,8 @@ const DashComments = () => {
     const starIndex = comments.length;
     try {
       const res = await fetch(
-        `${server}/api/comment/getcomments?startIndex=${starIndex}`
+        `${server}/api/comment/getcomments?startIndex=${starIndex}`,
+        { credentials: "include" }
       );
       const data = await res.json();
       if (res.ok) {
@@ -62,6 +65,7 @@ const DashComments = () => {
         `${server}/api/comment/deleteComment/${commentIdToDelete}`,
         {
           method: "DELETE",
+          credentials: "include",
         }
       );
       const data = await res.json();

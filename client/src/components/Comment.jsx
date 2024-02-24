@@ -38,6 +38,7 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
         `${server}/api/comment/editComment/${comment._id}`,
         {
           method: "PUT",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ content: editedContent }),
         }

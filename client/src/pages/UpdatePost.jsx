@@ -120,6 +120,7 @@ const UpdatePost = () => {
         `${server}/api/post/updatepost/${postId}/${currentUser._id}`,
         {
           method: "PUT",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
         }

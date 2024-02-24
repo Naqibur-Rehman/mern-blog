@@ -25,7 +25,9 @@ const DashboardComponent = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch(`${server}/api/user/getusers?limit=5`);
+        const res = await fetch(`${server}/api/user/getusers?limit=5`, {
+          credentials: "include",
+        });
         if (res.ok) {
           const data = await res.json();
           setUsers(data.users);
@@ -39,7 +41,9 @@ const DashboardComponent = () => {
 
     const fetchComments = async () => {
       try {
-        const res = await fetch(`${server}/api/comment/getComments?limit=5`);
+        const res = await fetch(`${server}/api/comment/getComments?limit=5`, {
+          credentials: "include",
+        });
         if (res.ok) {
           const data = await res.json();
           setComments(data.comments);

@@ -18,7 +18,9 @@ const DashUsers = () => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${server}/api/user/getusers`);
+        const res = await fetch(`${server}/api/user/getusers`, {
+          credentials: "include",
+        });
         const data = await res.json();
         if (res.ok) {
           setUsers(data.users);
@@ -42,7 +44,8 @@ const DashUsers = () => {
     const starIndex = users.length;
     try {
       const res = await fetch(
-        `${server}/api/user/getusers?startIndex=${starIndex}`
+        `${server}/api/user/getusers?startIndex=${starIndex}`,
+        { credentials: "include" }
       );
       const data = await res.json();
       if (res.ok) {
@@ -61,6 +64,7 @@ const DashUsers = () => {
     try {
       const res = await fetch(`${server}/api/user/delete/${userIdToDelete}`, {
         method: "DELETE",
+        credentials: "include",
       });
       const data = await res.json();
       if (res.ok) {

@@ -63,7 +63,10 @@ const DashPosts = () => {
     try {
       const res = await fetch(
         `${server}/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,
-        { method: "DELETE" }
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
       );
       const data = await res.json();
       if (res.ok) {
