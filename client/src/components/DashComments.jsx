@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Modal from "./Modal";
 import Spinner from "./Spinner";
+import { server } from "../utils/server";
 
 const DashComments = () => {
   const [loading, setLoading] = useState(true);
@@ -16,7 +17,7 @@ const DashComments = () => {
     const fetchComments = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/comment/getComments`);
+        const res = await fetch(`${server}/api/comment/getComments`);
         const data = await res.json();
         if (res.ok) {
           setComments(data.comments);
@@ -40,7 +41,7 @@ const DashComments = () => {
     const starIndex = comments.length;
     try {
       const res = await fetch(
-        `/api/comment/getcomments?startIndex=${starIndex}`
+        `${server}/api/comment/getcomments?startIndex=${starIndex}`
       );
       const data = await res.json();
       if (res.ok) {
@@ -57,9 +58,12 @@ const DashComments = () => {
   const handleDeleteComment = async () => {
     setShowModal(false);
     try {
-      const res = await fetch(`/api/comment/deleteComment/${commentIdToDelete}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `${server}/api/comment/deleteComment/${commentIdToDelete}`,
+        {
+          method: "DELETE",
+        }
+      );
       const data = await res.json();
       if (res.ok) {
         setComments((prev) =>

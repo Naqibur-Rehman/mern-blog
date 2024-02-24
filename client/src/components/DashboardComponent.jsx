@@ -7,6 +7,7 @@ import {
 } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { server } from "../utils/server";
 
 const DashboardComponent = () => {
   const [users, setUsers] = useState([]);
@@ -24,7 +25,7 @@ const DashboardComponent = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch(`/api/user/getusers?limit=5`);
+        const res = await fetch(`${server}/api/user/getusers?limit=5`);
         if (res.ok) {
           const data = await res.json();
           setUsers(data.users);
@@ -38,7 +39,7 @@ const DashboardComponent = () => {
 
     const fetchComments = async () => {
       try {
-        const res = await fetch(`/api/comment/getComments?limit=5`);
+        const res = await fetch(`${server}/api/comment/getComments?limit=5`);
         if (res.ok) {
           const data = await res.json();
           setComments(data.comments);
@@ -52,7 +53,7 @@ const DashboardComponent = () => {
 
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`/api/post/getposts?limit=5`);
+        const res = await fetch(`${server}/api/post/getposts?limit=5`);
         if (res.ok) {
           const data = await res.json();
           setPosts(data.posts);
@@ -227,11 +228,9 @@ const DashboardComponent = () => {
                         />
                       </div>
                     </td>
-                        <td className="px-6 py-4 max-w-96"><p className="line-clamp-2">
-                        
-                            {post.title}
-                        </p>
-                        </td>
+                    <td className="px-6 py-4 max-w-96">
+                      <p className="line-clamp-2">{post.title}</p>
+                    </td>
                     <td className="px-6 py-4 w-5">{post.category}</td>
                   </tr>
                 ))}

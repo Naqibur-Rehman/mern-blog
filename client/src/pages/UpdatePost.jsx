@@ -13,6 +13,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { useSelector } from "react-redux";
 
 import { app } from "../firebase";
+import { server } from "../utils/server";
 
 const UpdatePost = () => {
   const [file, setFile] = useState(null);
@@ -29,7 +30,7 @@ const UpdatePost = () => {
   useEffect(() => {
     try {
       const fetchPost = async () => {
-        const res = await fetch(`/api/post/getposts?postId=${postId}`);
+        const res = await fetch(`${server}/api/post/getposts?postId=${postId}`);
         const data = await res.json();
         if (res.ok) {
           setPublishError(null);
@@ -116,7 +117,7 @@ const UpdatePost = () => {
     e.preventDefault();
     try {
       const res = await fetch(
-        `/api/post/updatepost/${postId}/${currentUser._id}`,
+        `${server}/api/post/updatepost/${postId}/${currentUser._id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

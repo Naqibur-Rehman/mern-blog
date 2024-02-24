@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
 import { signOutSuccess } from "../redux/user/userSlice";
+import { server } from "../utils/server";
 
 const Header = () => {
   const path = useLocation().pathname;
@@ -45,7 +46,7 @@ const Header = () => {
   const handleSignOut = async () => {
     setToggleDropdpown(false);
     try {
-      const res = await fetch("/api/user/signout", {
+      const res = await fetch(`${server}/api/user/signout`, {
         method: "POST",
       });
       const data = await res.json();
@@ -94,7 +95,10 @@ const Header = () => {
             </div>
           </form>
 
-          <Link to={'/search'} className="px-2 py-2 sm:px-4 sm:py-3 mx-auto outline outline-1 rounded-3xl lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700 dark:bg-gray-900">
+          <Link
+            to={"/search"}
+            className="px-2 py-2 sm:px-4 sm:py-3 mx-auto outline outline-1 rounded-3xl lg:hidden hover:bg-gray-100 dark:hover:bg-gray-700 dark:bg-gray-900"
+          >
             <AiOutlineSearch />
           </Link>
 

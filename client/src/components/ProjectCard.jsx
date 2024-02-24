@@ -15,7 +15,9 @@ const ProjectCard = ({ project }) => {
 
       <div className="p-2 flex flex-col gap-2">
         <p className="text-2xl font-semibold text-center">{project.title}</p>
-        <span className="text-sm italic text-center">{project.description}</span>
+        <span className="text-sm italic text-center">
+          {project.description}
+        </span>
         <div className="flex">
           <a
             href={project.githubLink}

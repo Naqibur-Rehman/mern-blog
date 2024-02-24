@@ -4,6 +4,7 @@ import Spinner from "../components/Spinner";
 import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
 import PostCard from "../components/PostCard";
+import { server } from "../utils/server";
 
 export default function PostPage() {
   const [post, setPost] = useState(null);
@@ -18,7 +19,7 @@ export default function PostPage() {
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch(`/api/post/getposts?slug=${postSlug}`);
+        const res = await fetch(`${server}/api/post/getposts?slug=${postSlug}`);
         const data = await res.json();
         if (res.ok) {
           setPost(data.posts[0]);
@@ -41,7 +42,7 @@ export default function PostPage() {
   useEffect(() => {
     try {
       const fetchRecentPosts = async () => {
-        const res = await fetch("/api/post/getPosts?limit=3");
+        const res = await fetch(`${server}/api/post/getPosts?limit=3`);
         if (res.ok) {
           const data = await res.json();
           setRecentPosts(data.posts);

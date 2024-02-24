@@ -2,20 +2,26 @@ import { Link } from "react-router-dom";
 import CallToAction from "../components/CallToAction";
 import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
+import { server } from "../utils/server";
+import Spinner from "../components/Spinner";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchPost = async () => {
+      setLoading(true);
       try {
-        const res = await fetch("/api/post/getposts");
+        const res = await fetch(`${server}/api/post/getposts`);
         if (res.ok) {
           const data = await res.json();
           setPosts(data.posts);
+          setLoading(false);
         }
       } catch (error) {
         console.log(error);
+        setLoading(false);
       }
     };
     fetchPost();
@@ -42,7 +48,8 @@ const Home = () => {
       </div>
 
       <div className="p-3 py-7 flex flex-col gap-8 max-w-6xl justify-center items-center mx-auto">
-        {posts && posts.length > 0 && (
+        {loading && <Spinner />}
+        {!loading && posts && posts.length > 0 && (
           <div className="flex flex-col gap-6">
             <h2 className="text-2xl font-semibold text-center">Recent Posts</h2>
             <div className="flex flex-wrap gap-4 justify-center">

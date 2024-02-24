@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Comment from "./Comment";
 import Modal from "./Modal";
+import { server } from "../utils/server";
 
 // eslint-disable-next-line react/prop-types
 const CommentSection = ({ postId }) => {
@@ -24,7 +25,7 @@ const CommentSection = ({ postId }) => {
 
     try {
       setCommentError(null);
-      const res = await fetch("/api/comment/create", {
+      const res = await fetch(`${server}/api/comment/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -48,7 +49,9 @@ const CommentSection = ({ postId }) => {
   useEffect(() => {
     const getComments = async () => {
       try {
-        const res = await fetch(`/api/comment/getPostComments/${postId}`);
+        const res = await fetch(
+          `${server}/api/comment/getPostComments/${postId}`
+        );
         const data = await res.json();
         if (res.ok) {
           setPostComments(data);
@@ -68,9 +71,12 @@ const CommentSection = ({ postId }) => {
         return;
       }
 
-      const res = await fetch(`/api/comment/likeComment/${commentId}`, {
-        method: "PUT",
-      });
+      const res = await fetch(
+        `${server}/api/comment/likeComment/${commentId}`,
+        {
+          method: "PUT",
+        }
+      );
       if (res.ok) {
         const data = await res.json();
         setPostComments(
@@ -109,9 +115,12 @@ const CommentSection = ({ postId }) => {
         return;
       }
 
-      const res = await fetch(`/api/comment/deleteComment/${commentToDelete}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `${server}/api/comment/deleteComment/${commentToDelete}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (res.ok) {
         const data = await res.json();
         console.log(data);

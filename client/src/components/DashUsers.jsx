@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import Modal from "./Modal";
 import Spinner from "./Spinner";
+import { server } from "../utils/server";
 
 const DashUsers = () => {
   const [loading, setLoading] = useState(true);
@@ -17,7 +18,7 @@ const DashUsers = () => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/user/getusers`);
+        const res = await fetch(`${server}/api/user/getusers`);
         const data = await res.json();
         if (res.ok) {
           setUsers(data.users);
@@ -40,7 +41,9 @@ const DashUsers = () => {
   const handleShowMore = async () => {
     const starIndex = users.length;
     try {
-      const res = await fetch(`/api/user/getusers?startIndex=${starIndex}`);
+      const res = await fetch(
+        `${server}/api/user/getusers?startIndex=${starIndex}`
+      );
       const data = await res.json();
       if (res.ok) {
         setUsers((prev) => [...prev, ...data.users]);
@@ -56,7 +59,7 @@ const DashUsers = () => {
   const handleDeleteUser = async () => {
     setShowModal(false);
     try {
-      const res = await fetch(`/api/user/delete/${userIdToDelete}`, {
+      const res = await fetch(`${server}/api/user/delete/${userIdToDelete}`, {
         method: "DELETE",
       });
       const data = await res.json();

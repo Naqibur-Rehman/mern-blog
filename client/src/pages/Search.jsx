@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import PostCard from "../components/PostCard";
+import { server } from "../utils/server";
 
 const Search = () => {
   const [sidebarData, setSidebarData] = useState({
@@ -35,7 +36,7 @@ const Search = () => {
       try {
         setLoading(true);
         const searchQuery = urlParams.toString();
-        const res = await fetch(`/api/post/getposts?${searchQuery}`);
+        const res = await fetch(`${server}/api/post/getposts?${searchQuery}`);
         if (res.ok) {
           const data = await res.json();
           setPosts(data.posts);
@@ -94,7 +95,7 @@ const Search = () => {
       const urlParams = new URLSearchParams(loacation.search);
       urlParams.set("startIndex", startIndex);
       const searchQuery = urlParams.toString();
-      const res = await fetch(`/api/post/getposts?${searchQuery}`);
+      const res = await fetch(`${server}/api/post/getposts?${searchQuery}`);
       if (res.ok) {
         const data = await res.json();
         setPosts([...posts, ...data.posts]);

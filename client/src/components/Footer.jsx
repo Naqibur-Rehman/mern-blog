@@ -25,9 +25,7 @@ const Footer = () => {
           </div>
           <div className="mt-6 grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-6">
             <div>
-              <h2 className="mb-4 text-sm font-semibold uppercase">
-                About
-              </h2>
+              <h2 className="mb-4 text-sm font-semibold uppercase">About</h2>
               <ul className="font-medium">
                 <li className="mb-4">
                   <Link to="/about" className="hover:underline">
@@ -47,9 +45,7 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-4 text-sm font-semibold uppercase">
-                Follow
-              </h2>
+              <h2 className="mb-4 text-sm font-semibold uppercase">Follow</h2>
               <ul className=" font-medium">
                 <li className="mb-4">
                   <a
@@ -74,9 +70,7 @@ const Footer = () => {
               </ul>
             </div>
             <div>
-              <h2 className="mb-4 text-sm font-semibold uppercase">
-                Legal
-              </h2>
+              <h2 className="mb-4 text-sm font-semibold uppercase">Legal</h2>
               <ul className="font-medium">
                 <li className="mb-4">
                   <a href="#" className="hover:underline">

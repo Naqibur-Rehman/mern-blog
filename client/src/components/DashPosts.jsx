@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Modal from "./Modal";
 import Spinner from "./Spinner";
+import { server } from "../utils/server";
 
 const DashPosts = () => {
   const [loading, setLoading] = useState(true);
@@ -17,7 +18,9 @@ const DashPosts = () => {
     const fetchPosts = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/post/getposts?userId=${currentUser._id}`);
+        const res = await fetch(
+          `${server}/api/post/getposts?userId=${currentUser._id}`
+        );
         const data = await res.json();
         if (res.ok) {
           setUserPosts(data.posts);
@@ -41,7 +44,7 @@ const DashPosts = () => {
     const starIndex = userPosts.length;
     try {
       const res = await fetch(
-        `/api/post/getposts?userId=${currentUser._id}&startIndex=${starIndex}`
+        `${server}/api/post/getposts?userId=${currentUser._id}&startIndex=${starIndex}`
       );
       const data = await res.json();
       if (res.ok) {
@@ -59,7 +62,7 @@ const DashPosts = () => {
     setShowModal(false);
     try {
       const res = await fetch(
-        `/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,
+        `${server}/api/post/deletepost/${postIdToDelete}/${currentUser._id}`,
         { method: "DELETE" }
       );
       const data = await res.json();
