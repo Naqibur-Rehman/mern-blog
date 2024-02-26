@@ -87,7 +87,11 @@ export const signin = async (req, res, next) => {
     const { password: password1, ...rest } = existingUser._doc;
     res
       .status(200)
-      .cookie("access_token", token, { httpOnly: true, sameSite: "None" })
+      .cookie("access_token", token, {
+        httpOnly: true,
+        sameSite: "None",
+        secure: true,
+      })
       .json(rest);
   } catch (error) {
     return next(errorHandler(500, "Login failed."));
@@ -110,7 +114,11 @@ export const google = async (req, res, next) => {
       const { password, ...rest } = user._doc;
       res
         .status(200)
-        .cookie("access_token", token, { httpOnly: true, sameSite: "None" })
+        .cookie("access_token", token, {
+          httpOnly: true,
+          sameSite: "None",
+          secure: true,
+        })
         .json(rest);
     } else {
       const generatedPassword =
@@ -138,7 +146,11 @@ export const google = async (req, res, next) => {
       const { password, ...rest } = newUser._doc;
       res
         .status(200)
-        .cookie("access_token", token, { httpOnly: true, sameSite: "None" })
+        .cookie("access_token", token, {
+          httpOnly: true,
+          sameSite: "None",
+          secure: true,
+        })
         .json(rest);
     }
   } catch (error) {
