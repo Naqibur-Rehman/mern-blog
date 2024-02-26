@@ -39,7 +39,10 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
         {
           method: "PUT",
           credentials: "include",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Credentials": true,
+          },
           body: JSON.stringify({ content: editedContent }),
         }
       );

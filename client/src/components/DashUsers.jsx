@@ -20,6 +20,7 @@ const DashUsers = () => {
       try {
         const res = await fetch(`${server}/api/user/getusers`, {
           credentials: "include",
+          headers: { "Access-Control-Allow-Credentials": true },
         });
         const data = await res.json();
         if (res.ok) {
@@ -45,7 +46,12 @@ const DashUsers = () => {
     try {
       const res = await fetch(
         `${server}/api/user/getusers?startIndex=${starIndex}`,
-        { credentials: "include" }
+        {
+          credentials: "include",
+          headers: {
+            "Access-Control-Allow-Credentials": true,
+          },
+        }
       );
       const data = await res.json();
       if (res.ok) {
